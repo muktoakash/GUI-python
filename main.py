@@ -64,6 +64,9 @@ def random_word3():
     text3.setText(word)
 
 # Events
+button1.clicked.connect(random_word1)
+button2.clicked.connect(random_word2)
+button3.clicked.connect(random_word3)
 
 # Show/Run our App
 main_window.show()
