@@ -3,6 +3,7 @@
 # Import Modules
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
+
 from random import choice
 from nltk.corpus import words
 
@@ -24,6 +25,8 @@ text3 = QLabel("?")
 button1 = QPushButton("Click Me")
 button2 = QPushButton("Click Me")
 button3 = QPushButton("Click Me")
+
+word_list = words.words() # Use all words in nltk corpus
 
 # All Design Here
 master_layout = QVBoxLayout()
@@ -47,11 +50,20 @@ master_layout.addLayout(row3)
 
 main_window.setLayout(master_layout)
 
-# Events
-
 # Getting a Random Word from a List
-word_list = words.words() # Use all words in nltk corpus
+def random_word1():
+    word = choice(word_list)
+    text1.setText(word)
 
+def random_word2():
+    word = choice(word_list)
+    text2.setText(word)
+
+def random_word3():
+    word = choice(word_list)
+    text3.setText(word)
+
+# Events
 
 # Show/Run our App
 main_window.show()
