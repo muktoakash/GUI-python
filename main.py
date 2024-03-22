@@ -1,10 +1,11 @@
 """./main.py"""
 
 # Import Modules
+from random import choice
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 
-from random import choice
 from nltk.corpus import words
 
 
@@ -52,14 +53,17 @@ main_window.setLayout(master_layout)
 
 # Getting a Random Word from a List
 def random_word1():
+    """Choses a random word for text1"""
     word = choice(word_list)
     text1.setText(word)
 
 def random_word2():
+    """Choses a random word for text2"""
     word = choice(word_list)
     text2.setText(word)
 
 def random_word3():
+    """Choses a random word for text3"""
     word = choice(word_list)
     text3.setText(word)
 
