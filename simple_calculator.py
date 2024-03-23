@@ -1,4 +1,8 @@
-"""./main.py"""
+"""./simple_calculator.py
+
+GUI app that creates a simple calculator using functions,
+event listeners, and event handlers
+"""
 
 #imports
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
