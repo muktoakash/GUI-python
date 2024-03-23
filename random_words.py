@@ -1,4 +1,8 @@
-"""./main.py"""
+"""./random_wprds.py
+
+GUI App using PyQt5 that choses random words to display from
+the nltk.corpus at the press of buttons.
+"""
 
 # Import Modules
 from random import choice
