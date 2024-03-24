@@ -6,6 +6,7 @@ event listeners, and event handlers
 
 #imports
 from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
+from PyQt5.QtGui import QFont
 
 class CalcApp(QWidget):
 
@@ -17,6 +18,8 @@ class CalcApp(QWidget):
 
         # All objects/Widgets
         self.text_box = QLineEdit()
+        self.text_box.setFont(QFont("Arial", 22))
+
         self.grid = QGridLayout()
 
         self.buttons = [
@@ -32,6 +35,7 @@ class CalcApp(QWidget):
         for text in self.buttons:
             button = QPushButton(text)
             button.clicked.connect(self.button_click)
+            button.setStyleSheet("QPushButton { font: 15pt Helvetica; padding: 10px;}")
             self.grid.addWidget(button, row, col)
             col += 1
 
@@ -41,7 +45,9 @@ class CalcApp(QWidget):
 
 
         self.clear =QPushButton("Clear")
+        self.clear.setStyleSheet("QPushButton { font: 15pt Helvetica; padding: 10px;}")
         self.delete = QPushButton("<")
+        self.delete.setStyleSheet("QPushButton { font: 15pt Helvetica; padding: 10px;}")
 
         # Design
         master_layout = QVBoxLayout()
@@ -53,6 +59,7 @@ class CalcApp(QWidget):
         button_row.addWidget(self.delete)
 
         master_layout.addLayout(button_row)
+        master_layout.setContentsMargins(25, 25, 25, 25)
 
         self.setLayout(master_layout)
 
@@ -90,5 +97,6 @@ class CalcApp(QWidget):
 if __name__ in "__main__":
     app = QApplication([])
     main_window = CalcApp()
+    main_window.setStyleSheet("QWidget { background-color: #ff23ca }")
     main_window.show()
     app.exec_()
