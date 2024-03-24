@@ -5,7 +5,10 @@ event listeners, and event handlers
 """
 
 #imports
-from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QApplication,\
+     QWidget, QLineEdit,\
+     QPushButton, QHBoxLayout,\
+     QVBoxLayout, QGridLayout
 from PyQt5.QtGui import QFont
 
 class CalcApp(QWidget):
