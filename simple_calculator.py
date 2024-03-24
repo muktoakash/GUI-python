@@ -9,8 +9,11 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QPushButton, QHBox
 from PyQt5.QtGui import QFont
 
 class CalcApp(QWidget):
+    """Calculator App: creates a QWidget with a simple calculator layout"""
 
     def __init__(self):
+        """Set up all buttons and designs"""
+
         super().__init__()
         # App Settings
         self.setWindowTitle("Calculator App")
@@ -68,6 +71,8 @@ class CalcApp(QWidget):
 
 
     def button_click(self):
+        """Attach functionality to each button"""
+
         button = app.sender()
         text = button.text()
 
