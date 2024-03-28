@@ -24,6 +24,18 @@ saturation = QPushButton("Color")
 contrast = QPushButton("Contrast")
 blur = QPushButton("Blur")
 
+# Dropdown box
+filter_box = QComboBox()
+filter_box.addItem("Original")
+filter_box.addItem("Left")
+filter_box.addItem("Right")
+filter_box.addItem("Mirror")
+filter_box.addItem("Sharpen")
+filter_box.addItem("Black/White")
+filter_box.addItem("Color")
+filter_box.addItem("Contrast")
+filter_box.addItem("Blur")
+
 # show 
 main_window.show()
 app.exec_()
