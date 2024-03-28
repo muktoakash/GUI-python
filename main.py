@@ -56,6 +56,12 @@ col1.addWidget(saturation)
 col1.addWidget(contrast)
 col1.addWidget(blur)
 
+col2.addWidget(picture_box)
+
+master_layout.addLayout(col1, 20)
+master_layout.addLayout(col2, 80)
+
+main_window.setLayout(master_layout)
 # show 
 main_window.show()
 app.exec_()
