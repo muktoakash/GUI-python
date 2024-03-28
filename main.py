@@ -36,6 +36,26 @@ filter_box.addItem("Color")
 filter_box.addItem("Contrast")
 filter_box.addItem("Blur")
 
+picture_box = QLabel("Image will appear here!")
+
+# App Design
+master_layout = QHBoxLayout()
+
+col1 = QVBoxLayout()
+col2 = QVBoxLayout()
+
+col1.addWidget(btn_folder)
+col1.addWidget(file_list)
+col1.addWidget(filter_box)
+col1.addWidget(btn_left)
+col1.addWidget(btn_right)
+col1.addWidget(mirror)
+col1.addWidget(sharpness)
+col1.addWidget(gray)
+col1.addWidget(saturation)
+col1.addWidget(contrast)
+col1.addWidget(blur)
+
 # show 
 main_window.show()
 app.exec_()
