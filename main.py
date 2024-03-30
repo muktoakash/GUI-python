@@ -120,6 +120,13 @@ class Editor():
         picture_box.setPixmap(image)
         picture_box.show()
 
+    # Editing Methods:
+    def gray(self):
+        self.image = self.image.convert("L")
+        self.save_image()
+        image_path = os.path.join(working_directory,self.save_folder, self.filename)
+        self.show_image(image_path)
+
 
 def displayImage():
     if file_list.currentRow() >= 0:
@@ -132,6 +139,7 @@ main = Editor()
 btn_folder.clicked.connect(getWorkDirectory)
 file_list.currentRowChanged.connect(displayImage)
 
+gray.clicked.connect(main.gray)
 # show
 main_window.show()
 app.exec_()
