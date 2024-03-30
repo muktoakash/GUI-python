@@ -1,9 +1,12 @@
 """./main.py"""
 
 # Import Modules
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
+import os
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QFileDialog, \
     QPushButton, QListWidget, QComboBox, QHBoxLayout, QVBoxLayout
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
+from PIL import Image, ImageFilter, ImageEnhance
 
 # App Settings
 app = QApplication([])
@@ -62,6 +65,64 @@ master_layout.addLayout(col1, 20)
 master_layout.addLayout(col2, 80)
 
 main_window.setLayout(master_layout)
-# show 
+
+# All app functionality
+working_directory = ""
+
+# filter files and extensions
+def filter(files, extensions):
+    results = list()
+
+    for file in files:
+        for ext in extensions:
+            if file.endswith(ext):
+                results.append(file)
+
+    return results
+
+# choose current work directory
+def getWorkDirectory():
+    global working_directory
+    working_directory = QFileDialog.getExistingDirectory()
+    extensions = ['.jpg', '.jpeg', '.png', '.svg']
+    filenames = filter(os.listdir(working_directory), extensions)
+    file_list.clear()
+    for filename in filenames:
+        file_list.addItem(filename)
+
+class Editor():
+
+    def __init__(self) -> None:
+        self.image = None
+        self.original = None
+        self.filename = None
+        self.save_folder = "edits/"
+
+    def load_image(self, filename):
+        self.filename = filename
+        fullname = os.path.join(working_directory, self.filename)
+        self.image = Image.open(fullname)
+        self.original = self.image.copy()
+
+    def save_image(self):
+        path = os.path.join(working_directory, self.save_folder)
+        if not(os.path.exists(path) or os.path.isdir(path)):
+            os.mkdir(path)
+
+        fullname = os.path.join(path, self.filename)
+        self.image.save(fullname)
+
+    def show_image(self, path):
+        picture_box.hide()
+        image = QPixmap(path)
+        w, h = picture_box.width(), picture_box.height()
+        image = image.scaled(w, h, Qt.KeepAspectRatio)
+        picture_box.setPixmap(image)
+        picture_box.show()
+
+
+btn_folder.clicked.connect(getWorkDirectory)
+# show
 main_window.show()
 app.exec_()
+# """
