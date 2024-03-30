@@ -121,7 +121,17 @@ class Editor():
         picture_box.show()
 
 
+def displayImage():
+    if file_list.currentRow() >= 0:
+        filename = file_list.currentItem().text()
+        main.load_image(filename)
+        main.show_image(os.path.join(working_directory, main.filename))
+
+main = Editor()
+
 btn_folder.clicked.connect(getWorkDirectory)
+file_list.currentRowChanged.connect(displayImage)
+
 # show
 main_window.show()
 app.exec_()
