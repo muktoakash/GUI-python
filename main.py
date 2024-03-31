@@ -18,6 +18,7 @@ main_window.resize(900, 700)
 btn_folder = QPushButton("Folder")
 file_list = QListWidget()
 
+btn_orig = QPushButton("Original")
 btn_left = QPushButton("Left")
 btn_right = QPushButton("Right")
 mirror = QPushButton("Mirror")
