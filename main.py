@@ -30,6 +30,7 @@ blur = QPushButton("Blur")
 
 # Transformations
 transformations = {
+            "Original": lambda image: image,
             "B/W" : lambda image: image.convert("L"),
             "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
             "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
@@ -43,6 +44,7 @@ transformations = {
 # Widget List
 widgets = [btn_folder,
     file_list,
+    btn_orig,
     btn_left,
     btn_right,
     mirror,
@@ -147,10 +149,13 @@ class Editor():
     # Editing Methods:
     def transformImage(self, transformation):
 
-        transform_function = self.transformations.get(transformation)
-        if transform_function:
-            self.image = transform_function(self.image)
-            self.save_image()
+        if transformation == "Original":
+            self.image = self.original
+        else:
+            transform_function = self.transformations.get(transformation)
+            if transform_function:
+                self.image = transform_function(self.image)
+                self.save_image()
 
         self.save_image()
         image_path = os.path.join(working_directory, self.save_folder, self.filename)
@@ -191,6 +196,7 @@ btn_folder.clicked.connect(getWorkDirectory)
 file_list.currentRowChanged.connect(displayImage)
 filter_box.currentTextChanged.connect(handle_filter)
 
+btn_orig.clicked.connect(lambda: main.transformImage("Original"))
 gray.clicked.connect(lambda: main.transformImage("B/W"))
 btn_left.clicked.connect(lambda: main.transformImage("Left"))
 btn_right.clicked.connect(lambda: main.transformImage("Right"))
