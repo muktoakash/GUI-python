@@ -8,7 +8,31 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PIL import Image, ImageFilter, ImageEnhance
 
-# Global variables containing all transformations, labels and widgets
+# Global variables containing all transformations and labels
+# Transformations
+transformations = {
+            "Original": lambda image: image,
+            "B/W" : lambda image: image.convert("L"),
+            "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
+            "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
+            "Blur" : lambda image: image.filter(ImageFilter.BLUR),
+            "Left" : lambda image: image.transpose(Image.ROTATE_90),
+            "Right" : lambda image: image.transpose(Image.ROTATE_270),
+            "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT),
+            "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN),
+        }
+
+# Label list
+labels = ["Original",
+    "Left",
+    "Right",
+    "Mirror",
+    "Sharpen",
+    "Black/White",
+    "Color",
+    "Contrast",
+    "Blur"]
+
 
 # App Settings
 app = QApplication([])
@@ -31,19 +55,6 @@ saturation = QPushButton("Color")
 contrast = QPushButton("Contrast")
 blur = QPushButton("Blur")
 
-# Transformations
-transformations = {
-            "Original": lambda image: image,
-            "B/W" : lambda image: image.convert("L"),
-            "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
-            "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
-            "Blur" : lambda image: image.filter(ImageFilter.BLUR),
-            "Left" : lambda image: image.transpose(Image.ROTATE_90),
-            "Right" : lambda image: image.transpose(Image.ROTATE_270),
-            "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT),
-            "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN),
-        }
-
 # Widget List
 widgets = [btn_folder,
     file_list,
@@ -57,16 +68,6 @@ widgets = [btn_folder,
     contrast,
     blur]
 
-# Label list
-labels = ["Original",
-    "Left",
-    "Right",
-    "Mirror",
-    "Sharpen",
-    "Black/White",
-    "Color",
-    "Contrast",
-    "Blur"]
 
 # Dropdown box
 filter_box = QComboBox()
