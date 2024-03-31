@@ -136,6 +136,9 @@ class Editor():
         if transform_function:
             self.image = transform_function(self.image)
             self.save_image()
+
+        self.save_image()
+        image_path = os.path.join(working_directory, self.save_folder, self.filename)
         self.show_image()
 
     def apply_filter(self, filter_name):
