@@ -8,6 +8,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PIL import Image, ImageFilter, ImageEnhance
 
+# Global variables containing all transformations, labels and widgets
+
 # App Settings
 app = QApplication([])
 main_window = QWidget()
@@ -16,8 +18,9 @@ main_window.resize(900, 700)
 
 # All app widgets/objects
 btn_folder = QPushButton("Folder")
-file_list = QListWidget()
+file_list = QListWidget() # For creating a list
 
+# buttons for transformations:
 btn_orig = QPushButton("Original")
 btn_left = QPushButton("Left")
 btn_right = QPushButton("Right")
