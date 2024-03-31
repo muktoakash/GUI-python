@@ -71,12 +71,14 @@ widgets = [btn_folder,
 
 # Dropdown box
 filter_box = QComboBox()
+# QComboBox widget combines a button with a dropdown list.
 
 # Generate Filer Boxes
 for label in labels:
     filter_box.addItem(label)
 
 picture_box = QLabel("Image will appear here!")
+picture_box.setAlignment(Qt.AlignCenter)
 
 # App Design
 master_layout = QHBoxLayout()
