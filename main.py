@@ -28,17 +28,47 @@ saturation = QPushButton("Color")
 contrast = QPushButton("Contrast")
 blur = QPushButton("Blur")
 
+# Transformations
+transformations = {
+            "B/W" : lambda image: image.convert("L"),
+            "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
+            "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
+            "Blur" : lambda image: image.filter(ImageFilter.BLUR),
+            "Left" : lambda image: image.transpose(Image.ROTATE_90),
+            "Right" : lambda image: image.transpose(Image.ROTATE_270),
+            "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT),
+            "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN),
+        }
+
+# Widget List
+widgets = [btn_folder,
+    file_list,
+    btn_left,
+    btn_right,
+    mirror,
+    sharpness,
+    gray,
+    saturation,
+    contrast,
+    blur]
+
+# Label list
+labels = ["Original",
+    "Left",
+    "Right",
+    "Mirror",
+    "Sharpen",
+    "Black/White",
+    "Color",
+    "Contrast",
+    "Blur"]
+
 # Dropdown box
 filter_box = QComboBox()
-filter_box.addItem("Original")
-filter_box.addItem("Left")
-filter_box.addItem("Right")
-filter_box.addItem("Mirror")
-filter_box.addItem("Sharpen")
-filter_box.addItem("Black/White")
-filter_box.addItem("Color")
-filter_box.addItem("Contrast")
-filter_box.addItem("Blur")
+
+# Generate Filer Boxes
+for label in labels:
+    filter_box.addItem(label)
 
 picture_box = QLabel("Image will appear here!")
 
