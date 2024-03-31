@@ -10,7 +10,7 @@ from PIL import Image, ImageFilter, ImageEnhance
 
 # Global variables containing all transformations and labels
 # Transformations
-transformations = {
+mappings = {
             "Original": lambda image: image,
             "B/W" : lambda image: image.convert("L"),
             "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
@@ -107,7 +107,7 @@ def filter(files, extensions):
     list of acceptable extensions, and filters
     only the files with matching extensions.
     """
-    results = list()
+    results = []
 
     for file in files:
         for ext in extensions:
@@ -151,7 +151,7 @@ class Editor():
         apply_filter(filter_name)
     """
 
-    def __init__(self, transformations = transformations) -> None:
+    def __init__(self) -> None:
         """
         Constructs and editor object.
 
@@ -162,7 +162,7 @@ class Editor():
         self.original = None
         self.filename = None
         self.save_folder = "edits/"
-        self.transformations = transformations
+        self.transformations = mappings.copy()
 
     def load_image(self, filename):
         """
