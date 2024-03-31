@@ -169,6 +169,21 @@ class Editor():
         image_path = os.path.join(working_directory,self.save_folder, self.filename)
         self.show_image(image_path)
 
+    def apply_filter(self, filter_name):
+        if filter_name == "Original":
+            self.image = self.original.copy()
+        else:
+            mapping = {
+                "B/W" : lambda image: image.convert("L")
+                "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2)
+                "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2)
+                "Blur" : lambda image: image.filter(ImageFilter.BLUR)
+                "Left" : lambda image: image.transpose(Image.ROTATE_90)
+                "Right" : lambda image: image.transpose(Image.ROTATE_270)
+                "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT)
+                "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN)
+            }
+
 
 def displayImage():
     if file_list.currentRow() >= 0:
