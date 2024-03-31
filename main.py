@@ -183,6 +183,20 @@ class Editor():
                 "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT)
                 "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN)
             }
+            filter_function = mapping.get(filter_name)
+            if filter_function:
+                self.image = filter_function(self.image)
+                self.save_image()
+                image_path = os.path.join(working_directory, self.save_folder, self.filename)
+                self.show_image(image_path)
+            pass
+
+        self.save_image()
+        image_path = os.path.join(working_directory, self.save_folder,
+                                self.filename)
+        self.show_image(image_path)
+
+def handle_filter
 
 
 def displayImage():
