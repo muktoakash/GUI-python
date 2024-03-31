@@ -78,20 +78,12 @@ master_layout = QHBoxLayout()
 col1 = QVBoxLayout()
 col2 = QVBoxLayout()
 
-col1.addWidget(btn_folder)
-col1.addWidget(file_list)
-col1.addWidget(filter_box)
-col1.addWidget(btn_left)
-col1.addWidget(btn_right)
-col1.addWidget(mirror)
-col1.addWidget(sharpness)
-col1.addWidget(gray)
-col1.addWidget(saturation)
-col1.addWidget(contrast)
-col1.addWidget(blur)
+for widget in widgets:
+    col1.addWidget(widget)
 
 col2.addWidget(picture_box)
 
+# Set the layout in a 20-80 split
 master_layout.addLayout(col1, 20)
 master_layout.addLayout(col2, 80)
 
