@@ -115,11 +115,12 @@ def getWorkDirectory():
 
 class Editor():
 
-    def __init__(self) -> None:
+    def __init__(self, transformations = transformations) -> None:
         self.image = None
         self.original = None
         self.filename = None
         self.save_folder = "edits/"
+        self.transformations = transformations
 
     def load_image(self, filename):
         self.filename = filename
@@ -145,17 +146,8 @@ class Editor():
 
     # Editing Methods:
     def transformImage(self, transformation):
-        transformations = {
-            "B/W" : lambda image: image.convert("L"),
-            "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
-            "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
-            "Blur" : lambda image: image.filter(ImageFilter.BLUR),
-            "Left" : lambda image: image.transpose(Image.ROTATE_90),
-            "Right" : lambda image: image.transpose(Image.ROTATE_270),
-            "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT),
-            "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN),
-        }
-        transform_function = transformations.get(transformation)
+
+        transform_function = self.transformations.get(transformation)
         if transform_function:
             self.image = transform_function(self.image)
             self.save_image()
@@ -168,17 +160,7 @@ class Editor():
         if filter_name == "Original":
             self.image = self.original.copy()
         else:
-            mapping = {
-                "B/W" : lambda image: image.convert("L"),
-                "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
-                "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
-                "Blur" : lambda image: image.filter(ImageFilter.BLUR),
-                "Left" : lambda image: image.transpose(Image.ROTATE_90),
-                "Right" : lambda image: image.transpose(Image.ROTATE_270),
-                "Mirror" : lambda image: image.transpose(Image.FLIP_LEFT_RIGHT),
-                "Sharpen" : lambda image: image.filter(ImageFilter.SHARPEN),
-            }
-            filter_function = mapping.get(filter_name)
+            filter_function = self.transformations.get(filter_name)
             if filter_function:
                 self.image = filter_function(self.image)
                 self.save_image()
