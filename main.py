@@ -102,6 +102,11 @@ working_directory = ""
 
 # filter files and extensions
 def filter(files, extensions):
+    """
+    filter accepts a list of files and
+    list of acceptable extensions, and filters
+    only the files with matching extensions.
+    """
     results = list()
 
     for file in files:
@@ -113,6 +118,11 @@ def filter(files, extensions):
 
 # choose current work directory
 def getWorkDirectory():
+    """Retrieves all the files from the current directory
+    and passes them onto the filter function alond with
+    a list of extensions. The result is then used to populate
+    the file_list.
+    Side Effect: modifies file_list"""
     global working_directory
     working_directory = QFileDialog.getExistingDirectory()
     extensions = ['.jpg', '.jpeg', '.png', '.svg']
@@ -122,8 +132,32 @@ def getWorkDirectory():
         file_list.addItem(filename)
 
 class Editor():
+    """
+    Editor objects are used to transform an image according to the
+    widgets listed above.
+
+    attributes:
+        - image : current image attached to the object
+        - original : original image loaded in the constructor
+        - filename : filename to load the image
+        - save_folder : designated folder to save the image
+        - transformations : dictionary of transformation functions
+
+    methods:
+        load_image(filename)
+        save_image()
+        show_image(path)
+        transformImage(transformation)
+        apply_filter(filter_name)
+    """
 
     def __init__(self, transformations = transformations) -> None:
+        """
+        Constructs and editor object.
+
+        parameters:
+            - transformations: list of transformation functions
+        """
         self.image = None
         self.original = None
         self.filename = None
@@ -131,12 +165,19 @@ class Editor():
         self.transformations = transformations
 
     def load_image(self, filename):
+        """
+            Loads the image from given filename using PIL
+        """
         self.filename = filename
         fullname = os.path.join(working_directory, self.filename)
         self.image = Image.open(fullname)
-        self.original = self.image.copy()
+        self.original = self.image.copy() # Keep a copy of the original
 
     def save_image(self):
+        """
+        Saves the current image attached to the Editor
+        in the designated save_folder.
+        """
         path = os.path.join(working_directory, self.save_folder)
         if not(os.path.exists(path) or os.path.isdir(path)):
             os.mkdir(path)
@@ -145,6 +186,7 @@ class Editor():
         self.image.save(fullname)
 
     def show_image(self, path):
+        """Show the current image"""
         picture_box.hide()
         image = QPixmap(path)
         w, h = picture_box.width(), picture_box.height()
@@ -154,9 +196,10 @@ class Editor():
 
     # Editing Methods:
     def transformImage(self, transformation):
+        """Apply the given transformation to the current image"""
 
         if transformation == "Original":
-            self.image = self.original
+            self.image = self.original # restore original
         else:
             transform_function = self.transformations.get(transformation)
             if transform_function:
@@ -168,8 +211,12 @@ class Editor():
         self.show_image(image_path)
 
     def apply_filter(self, filter_name):
+        """
+        Applies the given filter_name to the current image.
+        Does not save the transformed image.
+        """
         if filter_name == "Original":
-            self.image = self.original.copy()
+            self.image = self.original.copy() # restores the original image
         else:
             filter_function = self.transformations.get(filter_name)
             if filter_function:
@@ -185,12 +232,14 @@ class Editor():
         self.show_image(image_path)
 
 def handle_filter():
+    """Used to apply selectd filter to the chosen file"""
     if file_list.currentRow() >= 0:
         select_filter = filter_box.currentText()
         main.apply_filter(select_filter)
 
 
 def displayImage():
+    """Displays the current image from the chosen filename"""
     if file_list.currentRow() >= 0:
         filename = file_list.currentItem().text()
         main.load_image(filename)
@@ -199,9 +248,10 @@ def displayImage():
 main = Editor()
 
 btn_folder.clicked.connect(getWorkDirectory)
-file_list.currentRowChanged.connect(displayImage)
-filter_box.currentTextChanged.connect(handle_filter)
+file_list.currentRowChanged.connect(displayImage) # Show the image
+filter_box.currentTextChanged.connect(handle_filter) # For filter demo
 
+# Connect buttons with transformations
 btn_orig.clicked.connect(lambda: main.transformImage("Original"))
 gray.clicked.connect(lambda: main.transformImage("B/W"))
 btn_left.clicked.connect(lambda: main.transformImage("Left"))
@@ -215,4 +265,3 @@ mirror.clicked.connect(lambda: main.transformImage("Mirror"))
 # show
 main_window.show()
 app.exec_()
-# """
