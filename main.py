@@ -121,7 +121,7 @@ class Editor():
         picture_box.show()
 
     # Editing Methods:
-    def transformImage(self. transformation):
+    def transformImage(self, transformation):
         transformations = {
             "B/W" : lambda image: image.convert("L"),
             "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
@@ -139,7 +139,7 @@ class Editor():
 
         self.save_image()
         image_path = os.path.join(working_directory, self.save_folder, self.filename)
-        self.show_image()
+        self.show_image(image_path)
 
     def apply_filter(self, filter_name):
         if filter_name == "Original":
