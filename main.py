@@ -1,7 +1,9 @@
 # Import Modules
+import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
     QLineEdit, QComboBox, QDateEdit, QTableWidget, \
-    QPushButton, QVBoxLayout, QHBoxLayout
+    QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox
+from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 
 # App Class
 class ExpenseApp(QWidget):
@@ -54,6 +56,24 @@ class ExpenseApp(QWidget):
         self.master_layout.addWidget(self.table)
 
         self.setLayout(self.master_layout)
+
+# Create Database
+database = QSqlDatabase.addDatabase("QSQLITE")
+database.setDatabaseName("expense.db")
+if not database.open():
+    QMessageBox.critical(None, "Error", "Could not open Database")
+    sys.exit(1)
+
+query = QSqlQuery()
+query.exec_("""
+            CREATE TABLE IF NOT EXISTS expenses (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                date TEXT,
+                category TEXT,
+                amount REAL,
+                description TEXT
+            )
+            """)
 
 # Run the App
 if __name__ in "__main__":
