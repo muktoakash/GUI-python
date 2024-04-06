@@ -1,7 +1,7 @@
 # Import Modules
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
-    QLineEdit, QComboBox, QDateEdit, QTableWidget, \
+    QLineEdit, QComboBox, QDateEdit, QTableWidget, QTableWidgetItem, \
     QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 
@@ -56,6 +56,30 @@ class ExpenseApp(QWidget):
         self.master_layout.addWidget(self.table)
 
         self.setLayout(self.master_layout)
+
+    def load_table(self):
+        self.table.setRowCount(0)
+
+        query = QSqlQuery("SELECT * FROM expenses")
+        row = 0
+
+        while query.next():
+            expense_id = query.value(0)
+            date = query.value(1)
+            category = query.value(2)
+            amount = query.value(3)
+            description = query.value(4)
+
+            # Add values to Table
+            self.table.insertRow(row)
+
+            self.table.setItem(row, 0, QTableWidgetItem(str(expense_id)))
+            self.table.setItem(row, 1, QTableWidgetItem(str(date)))
+            self.table.setItem(row, 2, QTableWidgetItem(str(category)))
+            self.table.setItem(row, 3, QTableWidgetItem(str(amount)))
+            self.table.setItem(row, 4, QTableWidgetItem(str(description)))
+
+            row += 1
 
 # Create Database
 database = QSqlDatabase.addDatabase("QSQLITE")
