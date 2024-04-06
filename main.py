@@ -57,28 +57,25 @@ class ExpenseApp(QWidget):
 
         self.setLayout(self.master_layout)
 
+        self.load_table()
+
     def load_table(self):
         self.table.setRowCount(0)
 
         query = QSqlQuery("SELECT * FROM expenses")
         row = 0
+        columns = [expense_id:=None, date:=None, category:=None, amount:=None, description:=None]
+        num_col = len(columns)
 
         while query.next():
-            expense_id = query.value(0)
-            date = query.value(1)
-            category = query.value(2)
-            amount = query.value(3)
-            description = query.value(4)
-
-            # Add values to Table
+            # Create new Table row
             self.table.insertRow(row)
 
-            self.table.setItem(row, 0, QTableWidgetItem(str(expense_id)))
-            self.table.setItem(row, 1, QTableWidgetItem(str(date)))
-            self.table.setItem(row, 2, QTableWidgetItem(str(category)))
-            self.table.setItem(row, 3, QTableWidgetItem(str(amount)))
-            self.table.setItem(row, 4, QTableWidgetItem(str(description)))
-
+            # Add values to Table
+            for col_i in range(num_col):
+                columns[col_i] = query.value(col_i)
+                self.table.setItem(row, col_i,
+                                    QTableWidgetItem(str(columns[col_i])))
             row += 1
 
 # Create Database
