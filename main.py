@@ -1,9 +1,9 @@
 # Import Modules
 import sys
-from PyQt5.QtCore import QDate
+from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
     QLineEdit, QComboBox, QDateEdit, QTableWidget, QTableWidgetItem, \
-    QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox
+    QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox, QHeaderView
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 
 # App Class
@@ -17,6 +17,8 @@ class ExpenseApp(QWidget):
         self.setWindowTitle("Expense Tracker")
 
         self.date_box = QDateEdit()
+        self.date_box.setDate(QDate.currentDate())
+
         self.dropdown = QComboBox()
         self.amount = QLineEdit()
         self.description = QLineEdit()
@@ -31,9 +33,14 @@ class ExpenseApp(QWidget):
         self.header_names = ['Id', 'date', 'Category', 'Amount', 'Description']
         self.table.setHorizontalHeaderLabels(self.header_names)
 
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.sortByColumn(1, Qt.DescendingOrder)
+
+
     # Create Objects
 
     # Design App with Layouts
+
 
         categories = ['Food', 'Transportaion', 'Rent', 'Shopping', 'Entertainment', 'Bills', 'Other']
         self.dropdown.addItems(categories)
@@ -84,6 +91,8 @@ class ExpenseApp(QWidget):
                 self.table.setItem(row, col_i,
                                     QTableWidgetItem(str(columns[col_i])))
             row += 1
+
+        self.table.sortByColumn(1, Qt.DescendingOrder)
 
     def add_expense(self):
         date = self.date_box.date().toString("yyyy-MM-dd")
