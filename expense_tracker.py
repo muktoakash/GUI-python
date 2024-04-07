@@ -1,4 +1,8 @@
-""""""
+"""./expense_tracker.py
+
+    GUI App to keep track of day-to-day expenses.
+"""
+
 # Import Modules
 import sys
 from PyQt5.QtCore import QDate, Qt
@@ -10,25 +14,42 @@ from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 # App Class
 class ExpenseApp(QWidget):
     """
+    ExpenseApp()
+
+    Attributes:
+    - date_box
+    - dropdown : for expense category
+    - amount
+    - description
+    - table : for displaying database entries
+
+    Methods:
+    - load_table()
+    - add_expense()
+    - delete_expense()
     """
+
     def __init__(self):
         super().__init__()
+
     #Main App Objects & Settings
         self.resize(550, 500)
         self.setWindowTitle("Expense Tracker")
 
+        # Attributes
         self.date_box = QDateEdit()
         self.date_box.setDate(QDate.currentDate())
-
         self.dropdown = QComboBox()
         self.amount = QLineEdit()
         self.description = QLineEdit()
 
+        # Buttons
         self.add_button = QPushButton("Add Expenses")
         self.add_button.clicked.connect(self.add_expense)
         self.delete_button = QPushButton("Delete Expenses")
         self.delete_button.clicked.connect(self.delete_expense)
 
+        # Table
         self.table = QTableWidget()
         self.table.setColumnCount(5) # ID, date, category, amount, description
         self.header_names = ['Id', 'date', 'Category', 'Amount', 'Description']
@@ -37,11 +58,9 @@ class ExpenseApp(QWidget):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.sortByColumn(1, Qt.DescendingOrder)
 
-
-    # Create Objects
-
     # Design App with Layouts
 
+        # CSS stylesheet
         self.setStyleSheet("""
                            QWidget {background-color: #b8c9e1;}
 
@@ -78,9 +97,11 @@ class ExpenseApp(QWidget):
 
                            """)
 
+        # Create categories for dropdown
         categories = ['Food', 'Transportaion', 'Rent', 'Shopping', 'Entertainment', 'Bills', 'Other']
         self.dropdown.addItems(categories)
 
+        # Layout
         self.master_layout = QVBoxLayout()
         self.row1 = QHBoxLayout()
         self.row2 = QHBoxLayout()
@@ -110,6 +131,10 @@ class ExpenseApp(QWidget):
         self.load_table()
 
     def load_table(self):
+        """load_table()
+
+        Loads the database table for display
+        """
         self.table.setRowCount(0)
 
         query = QSqlQuery("SELECT * FROM expenses")
@@ -128,14 +153,23 @@ class ExpenseApp(QWidget):
                                     QTableWidgetItem(str(columns[col_i])))
             row += 1
 
+        # Sort the table by date
         self.table.sortByColumn(1, Qt.DescendingOrder)
 
     def add_expense(self):
+        """add_expense()
+
+        Functionality to add expense to the database.
+        Connected to self.add_button
+        """
+
+        # Gather data from attributes
         date = self.date_box.date().toString("yyyy-MM-dd")
         category = self.dropdown.currentText()
         amount = self.amount.text()
         description = self.description.text()
 
+        # Create and execute SQL query
         query = QSqlQuery()
         query.prepare("""
                         INSERT INTO expenses (date, category, amount, description)
@@ -147,6 +181,7 @@ class ExpenseApp(QWidget):
         query.addBindValue(description)
         query.exec_()
 
+        # Clean up
         self.date_box.setDate(QDate.currentDate())
         self.dropdown.setCurrentIndex(0)
         self.amount.clear()
@@ -155,18 +190,30 @@ class ExpenseApp(QWidget):
         self.load_table()
 
     def delete_expense(self):
+        """delete_expense()
+
+        Deletes selected expense row from the database.
+        Connected to self.delete__button
+        """
+
+        # Select a row
         selected_row = self.table.currentRow()
+
+        # Error handling
         if selected_row == -1:
             QMessageBox.warning(self, "No Expense Chosen", "Please choose an expense to delete!")
             return
 
+        # Get Id for SQL
         expense_id = int(self.table.item(selected_row, 0).text())
 
+        # Confirmation
         confirm = QMessageBox.question(self, "Are you sure?", "Delete Expense?", QMessageBox.Yes | QMessageBox.No)
 
         if confirm == QMessageBox.No:
             return
 
+        # Create and execute SQL query
         query = QSqlQuery()
         query.prepare("DELETE FROM expenses WHERE id = ?")
         query.addBindValue(expense_id)
@@ -181,6 +228,7 @@ if not database.open():
     QMessageBox.critical(None, "Error", "Could not open Database")
     sys.exit(1)
 
+# Create and execute SQL query
 query = QSqlQuery()
 query.exec_("""
             CREATE TABLE IF NOT EXISTS expenses (
