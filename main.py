@@ -24,6 +24,7 @@ class ExpenseApp(QWidget):
         self.add_button = QPushButton("Add Expenses")
         self.add_button.clicked.connect(self.add_expense)
         self.delete_button = QPushButton("Delete Expenses")
+        self.delete_button.clicked.connect(self.delete_expense)
 
         self.table = QTableWidget()
         self.table.setColumnCount(5) # ID, date, category, amount, description
@@ -126,7 +127,7 @@ class ExpenseApp(QWidget):
         query.addBindValue(expense_id)
         query.exec_()
 
-        self.load_table
+        self.load_table()
 
 # Create Database
 database = QSqlDatabase.addDatabase("QSQLITE")
