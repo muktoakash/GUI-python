@@ -22,6 +22,7 @@ class ExpenseApp(QWidget):
         self.description = QLineEdit()
 
         self.add_button = QPushButton("Add Expenses")
+        self.add_button.clicked.connect(self.add_expense)
         self.delete_button = QPushButton("Delete Expenses")
 
         self.table = QTableWidget()
