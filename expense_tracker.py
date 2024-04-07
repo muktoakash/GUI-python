@@ -102,7 +102,8 @@ class ExpenseApp(QWidget):
                            """)
 
         # Create categories for dropdown
-        categories = ['Food', 'Transportaion', 'Rent', 'Shopping', 'Entertainment', 'Bills', 'Other']
+        categories = ['Food', 'Transportaion', 'Rent', 'Shopping',
+                       'Entertainment', 'Bills', 'Other']
         self.dropdown.addItems(categories)
 
         # Layout
@@ -212,7 +213,9 @@ class ExpenseApp(QWidget):
         expense_id = int(self.table.item(selected_row, 0).text())
 
         # Confirmation
-        confirm = QMessageBox.question(self, "Are you sure?", "Delete Expense?", QMessageBox.Yes | QMessageBox.No)
+        confirm = QMessageBox.question(self, "Are you sure?",
+                                        "Delete Expense?",
+                                        QMessageBox.Yes | QMessageBox.No)
 
         if confirm == QMessageBox.No:
             return
