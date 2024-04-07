@@ -62,7 +62,7 @@ class ExpenseApp(QWidget):
 
         # CSS stylesheet
         self.setStyleSheet("""
-                           QWidget {background-color: #b8c9e1;}
+                           QWidget {background-color: rgb(224, 225, 221);}
 
                            QLabel{
                             color: #333;
@@ -70,23 +70,27 @@ class ExpenseApp(QWidget):
                            }
 
                            QLineEdit, QComboBox, QDateEdit {
-                            background-color: #b8c9e1;
+                            background-color: rgb(224, 225, 220);
                             color: #333;
+                            font-weight: 600;
                             border: 1px solid #444;
+                            border-radius:5px;
                             padding: 5px;
                            }
 
                            QTableWidget {
-                            background-color: #b8c9e1;
+                            background-color: rgb(224, 225, 220);
                             color: #333;
                             border: 1px solid #444;
+                            border-radius:5px;
                             selection-background-color: #ddd;
                            }
 
                            QPushButton {
-                            background-color: #4caf50;
+                            background-color: #198754;
                             color: #fff;
                             border: none;
+                            border-radius:5px;
                             padding: 8px 16px;
                             font-size: 14px;
                            }
