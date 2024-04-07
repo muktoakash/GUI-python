@@ -31,6 +31,10 @@ class ExpenseApp(QWidget):
     # Create Objects
 
     # Design App with Layouts
+
+        categories = ['Food', 'Transportaion', 'Rent', 'Shopping', 'Entertainment', 'Bills', 'Other']
+        self.dropdown.addItems(categories)
+
         self.master_layout = QVBoxLayout()
         self.row1 = QHBoxLayout()
         self.row2 = QHBoxLayout()
