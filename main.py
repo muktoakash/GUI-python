@@ -108,6 +108,26 @@ class ExpenseApp(QWidget):
 
         self.load_table()
 
+    def delete_expense(self):
+        selected_row = self.table.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self, "No Expense Chosen", "Please choose an expense to delete!")
+            return
+
+        expense_id = int(self.table.item(selected_row, 0).text())
+
+        confirm = QMessageBox.question(self, "Are you sure?", "Delete Expense?", QMessageBox.Yes | QMessageBox.No)
+
+        if confirm == QMessageBox.No:
+            return
+
+        query = QSqlQuery()
+        query.prepare("DELETE FROM expenses WHERE id = ?")
+        query.addBindValue(expense_id)
+        query.exec_()
+
+        self.load_table
+
 # Create Database
 database = QSqlDatabase.addDatabase("QSQLITE")
 database.setDatabaseName("expense.db")
