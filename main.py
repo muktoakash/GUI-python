@@ -1,5 +1,6 @@
 # Import Modules
 import sys
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
     QLineEdit, QComboBox, QDateEdit, QTableWidget, QTableWidgetItem, \
     QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox
@@ -81,6 +82,30 @@ class ExpenseApp(QWidget):
                 self.table.setItem(row, col_i,
                                     QTableWidgetItem(str(columns[col_i])))
             row += 1
+
+    def add_expense(self):
+        date = self.date_box.date().toString("yyyy-MM-dd")
+        category = self.dropdown.currentText()
+        amount = self.amount.text()
+        description = self.description.text()
+
+        query = QSqlQuery()
+        query.prepare("""
+                        INSERT INTO expenses (date, category, amount, description)
+                        VALUES (?, ?, ?, ?)
+                      """)
+        query.addBindValue(date)
+        query.addBindValue(category)
+        query.addBindValue(amount)
+        query.addBindValue(description)
+        query.exec_()
+
+        self.date_box.setDate(QDate.currentDate())
+        self.dropdown.setCurrentIndex(0)
+        self.amount.clear()
+        self.description.clear()
+
+        self.load_table()
 
 # Create Database
 database = QSqlDatabase.addDatabase("QSQLITE")
