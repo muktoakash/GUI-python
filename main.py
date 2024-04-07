@@ -41,6 +41,41 @@ class ExpenseApp(QWidget):
 
     # Design App with Layouts
 
+        self.setStyleSheet("""
+                           QWidget {background-color: #b8c9e1;}
+
+                           QLabel{
+                            color: #333;
+                            font-size: 14px;
+                           }
+
+                           QLineEdit, QComboBox, QDateEdit {
+                            background-color: #b8c9e1;
+                            color: #333;
+                            border: 1px solid #444;
+                            padding: 5px;
+                           }
+
+                           QTableWidget {
+                            background-color: #b8c9e1;
+                            color: #333;
+                            border: 1px solid #444;
+                            selection-background-color: #ddd;
+                           }
+
+                           QPushButton {
+                            background-color: #4caf50;
+                            color: #fff;
+                            border: none;
+                            padding: 8px 16px;
+                            font-size: 14px;
+                           }
+
+                           QPushButton:hover {
+                            background-color: #45a049;
+                           }
+
+                           """)
 
         categories = ['Food', 'Transportaion', 'Rent', 'Shopping', 'Entertainment', 'Bills', 'Other']
         self.dropdown.addItems(categories)
