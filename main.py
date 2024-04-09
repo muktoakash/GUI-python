@@ -1,0 +1,41 @@
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
+    QTreeView, QLineEdit, QMainWindow, QLabel, \
+    QVBoxLayout, QHBoxLayout
+from PyQt5.QtGui import QStandardItemModel
+
+class FinanceApp(QMainWindow):
+    def __init__(self):
+        super(FinanceApp, self).__init__()
+
+        self.setWindowTitle("InterestMe")
+        self.resize(800, 600)
+
+        main_window = QWidget()
+
+        #
+        self.rate_text = QLabel("Interst Rate (%):")
+        self.rate_input = QLineEdit()
+
+        self.initial_text = QLabel("Initial Investment:")
+        self.initial_input = QLineEdit
+
+        self.years_text = QLabel("Years to Invest:")
+        self.years_input = QLineEdit()
+
+        # Creation of Our TreeView
+        self.model = QStandardItemModel()
+        self.tree_view = QTreeView()
+        self.tree_view.setModel(self.model)
+
+        self.calc_button = QPushButton("Calculate")
+        self.clear_button = QPushButton("Clear")
+
+        self.figure = QLabel("----CHART WILL BE HERE SOON---")
+
+        self.master_layout = QVBoxLayout()
+        self.row1 = QHBoxLayout()
+        self.row2 = QHBoxLayout()
+        self.col1 = QVBoxLayout()
+        self.col2 = QVBoxLayout()
+
+        #
