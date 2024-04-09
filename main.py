@@ -17,7 +17,7 @@ class FinanceApp(QMainWindow):
         self.rate_input = QLineEdit()
 
         self.initial_text = QLabel("Initial Investment:")
-        self.initial_input = QLineEdit
+        self.initial_input = QLineEdit()
 
         self.years_text = QLabel("Years to Invest:")
         self.years_input = QLineEdit()
@@ -60,3 +60,10 @@ class FinanceApp(QMainWindow):
         self.master_layout.addLayout(self.row2)
 
         main_window.setLayout(self.master_layout)
+        self.setCentralWidget(main_window)
+
+if __name__ == "__main__":
+    app = QApplication([])
+    my_app = FinanceApp()
+    my_app.show()
+    app.exec_()
