@@ -52,3 +52,11 @@ class FinanceApp(QMainWindow):
         self.col1.addWidget(self.clear_button)
 
         self.col2.addWidget(self.figure)
+
+        self.row2.addLayout(self.col1)
+        self.row2.addLayout(self.col2)
+
+        self.master_layout.addLayout(self.row1)
+        self.master_layout.addLayout(self.row2)
+
+        main_window.setLayout(self.master_layout)
