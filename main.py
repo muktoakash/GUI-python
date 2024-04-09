@@ -39,3 +39,16 @@ class FinanceApp(QMainWindow):
         self.col2 = QVBoxLayout()
 
         #
+        self.row1.addWidget(self.rate_text)
+        self.row1.addWidget(self.rate_input)
+        self.row1.addWidget(self.initial_text)
+        self.row1.addWidget(self.initial_input)
+        self.row1.addWidget(self.years_text)
+        self.row1.addWidget(self.years_input)
+
+        #
+        self.col1.addWidget(self.tree_view)
+        self.col1.addWidget(self.calc_button)
+        self.col1.addWidget(self.clear_button)
+
+        self.col2.addWidget(self.figure)
