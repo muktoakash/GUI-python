@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
     QTreeView, QLineEdit, QMainWindow, QLabel, \
-    QVBoxLayout, QHBoxLayout, QMessageBox,
-from PyQt5.QtGui import QStandardItemModel, QStandardItem,
+    QVBoxLayout, QHBoxLayout, QMessageBox
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 class FinanceApp(QMainWindow):
     def __init__(self):
@@ -53,8 +53,8 @@ class FinanceApp(QMainWindow):
 
         self.col2.addWidget(self.figure)
 
-        self.row2.addLayout(self.col1, 20)
-        self.row2.addLayout(self.col2, 80)
+        self.row2.addLayout(self.col1, 30)
+        self.row2.addLayout(self.col2, 70)
 
         self.master_layout.addLayout(self.row1)
         self.master_layout.addLayout(self.row2)
@@ -81,13 +81,14 @@ class FinanceApp(QMainWindow):
         for year in range(1, num_years + 1):
             total += total * (interest_rate / 100)
             item_year = QStandardItem(str(year))
-            item_total = QStandardItem("{.2f}".format(total))
+            item_total = QStandardItem("{:.2f}".format(total))
             self.model.appendRow([item_year, item_total])
         
     def reset(self):
         self.rate_input.clear()
         self.initial_input.clear()
         self.years_input.clear()
+        self.model.clear()
 
 if __name__ == "__main__":
     app = QApplication([])
