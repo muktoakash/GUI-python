@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
     QTreeView, QLineEdit, QMainWindow, QLabel, \
-    QVBoxLayout, QHBoxLayout
+    QVBoxLayout, QHBoxLayout, QMessageBox,
 from PyQt5.QtGui import QStandardItemModel
 
 class FinanceApp(QMainWindow):
@@ -61,6 +61,17 @@ class FinanceApp(QMainWindow):
 
         main_window.setLayout(self.master_layout)
         self.setCentralWidget(main_window)
+    
+    def calc_interest(self):
+        initial_investment = None
+        try:
+            interest_rate = float(self.rate_input.text())
+            initial_investment = float(self.initial_input.text())
+            num_years = int(self.years_input.text())
+
+        except ValueError:
+            QMessageBox.warning(self, "Error", "Invalid input, enter a number!")
+            return
 
 if __name__ == "__main__":
     app = QApplication([])
