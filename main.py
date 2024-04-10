@@ -61,6 +61,9 @@ class FinanceApp(QMainWindow):
 
         main_window.setLayout(self.master_layout)
         self.setCentralWidget(main_window)
+
+        self.calc_button.clicked.connect(self.calc_interest)
+        self.clear_button.clicked.connect(self.reset)
     
     def calc_interest(self):
         initial_investment = None
