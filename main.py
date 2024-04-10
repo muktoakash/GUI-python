@@ -80,6 +80,11 @@ class FinanceApp(QMainWindow):
             item_year = QStandardItem(str(year))
             item_total = QStandardItem("{.2f}".format(total))
             self.model.appendRow([item_year, item_total])
+        
+    def reset(self):
+        self.rate_input.clear()
+        self.initial_input.clear()
+        self.years_input.clear()
 
 if __name__ == "__main__":
     app = QApplication([])
