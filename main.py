@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
     QTreeView, QLineEdit, QMainWindow, QLabel, \
     QVBoxLayout, QHBoxLayout, QMessageBox,
-from PyQt5.QtGui import QStandardItemModel
+from PyQt5.QtGui import QStandardItemModel, QStandardItem,
 
 class FinanceApp(QMainWindow):
     def __init__(self):
@@ -72,6 +72,14 @@ class FinanceApp(QMainWindow):
         except ValueError:
             QMessageBox.warning(self, "Error", "Invalid input, enter a number!")
             return
+        
+        total = initial_investment
+        
+        for year in range(1, num_years + 1):
+            total += total * (interest_rate / 100)
+            item_year = QStandardItem(str(year))
+            item_total = QStandardItem("{.2f}".format(total))
+            self.model.appendRow([item_year, item_total])
 
 if __name__ == "__main__":
     app = QApplication([])
