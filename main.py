@@ -1,7 +1,9 @@
+import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
     QTreeView, QLineEdit, QMainWindow, QLabel, \
     QVBoxLayout, QHBoxLayout, QMessageBox
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtGui import QStandardItemModel,
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 class FinanceApp(QMainWindow):
     def __init__(self):
@@ -30,7 +32,8 @@ class FinanceApp(QMainWindow):
         self.calc_button = QPushButton("Calculate")
         self.clear_button = QPushButton("Clear")
 
-        self.figure = QLabel("----CHART WILL BE HERE SOON---")
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)
 
         self.master_layout = QVBoxLayout()
         self.row1 = QHBoxLayout()
@@ -51,7 +54,7 @@ class FinanceApp(QMainWindow):
         self.col1.addWidget(self.calc_button)
         self.col1.addWidget(self.clear_button)
 
-        self.col2.addWidget(self.figure)
+        self.col2.addWidget(self.canvas)
 
         self.row2.addLayout(self.col1, 30)
         self.row2.addLayout(self.col2, 70)
@@ -64,7 +67,7 @@ class FinanceApp(QMainWindow):
 
         self.calc_button.clicked.connect(self.calc_interest)
         self.clear_button.clicked.connect(self.reset)
-    
+
     def calc_interest(self):
         initial_investment = None
         try:
@@ -75,15 +78,15 @@ class FinanceApp(QMainWindow):
         except ValueError:
             QMessageBox.warning(self, "Error", "Invalid input, enter a number!")
             return
-        
+
         total = initial_investment
-        
+
         for year in range(1, num_years + 1):
             total += total * (interest_rate / 100)
             item_year = QStandardItem(str(year))
             item_total = QStandardItem("{:.2f}".format(total))
             self.model.appendRow([item_year, item_total])
-        
+
     def reset(self):
         self.rate_input.clear()
         self.initial_input.clear()
