@@ -88,6 +88,9 @@ class FinanceApp(QMainWindow):
             QMessageBox.warning(self, "Error", "Invalid input, enter a number!")
             return
 
+        self.model.clear()
+
+        self.model.setHorizontalHeaderLabels(["Year", "Total"])
         total = initial_investment
 
         for year in range(1, num_years + 1):
@@ -98,6 +101,7 @@ class FinanceApp(QMainWindow):
 
         # Update chart with data
         self.figure.clear()
+        plt.style.use('seaborn-v0_8-darkgrid')
         ax = self.figure.subplots()
         years = list(range(1, num_years + 1))
         totals = [initial_investment * (1 + interest_rate/100)**year
@@ -123,7 +127,7 @@ class FinanceApp(QMainWindow):
                     total = self.model.index(row, 1).data()
                     file.write(f'{year}, {total}\n')
 
-            plt.savefig("Saved/chart.png")
+            plt.savefig(os.path.join(folder_path, "Chart.png"))
 
             QMessageBox.information(self, "Save Reusults",
                                 "Results were saved to your Folder")
