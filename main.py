@@ -106,6 +106,9 @@ class FinanceApp(QMainWindow):
         self.years_input.clear()
         self.model.clear()
 
+        self.figure.clear()
+        self.canvas.clear()
+
 if __name__ == "__main__":
     app = QApplication([])
     my_app = FinanceApp()
