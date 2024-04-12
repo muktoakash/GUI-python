@@ -108,10 +108,10 @@ class FinanceApp(QMainWindow):
         dir_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if dir_path:
             folder_path = os.path.join(dir_path, "Saved")
-            os.mkdir(folder_path)
+            os.makedirs(folder_path, exist_ok=True)
 
             file_path = os.path.join(folder_path, "results.csv")
-            with open(file_path) as file:
+            with open(file_path, "w") as file:
                 file.write("Year, Total\n")
                 for row in range(self.model.rowCount()):
                     year = self.model.index(row, 0).data()
@@ -121,7 +121,7 @@ class FinanceApp(QMainWindow):
             plt.savefig("Saved/chart.png")
 
             QMessageBox.information(self, "Save Reusults",
-                                "Results we saved to your Folder")
+                                "Results were saved to your Folder")
 
         else:
             QMessageBox.warning(self, "Save Results", "No directory selected")
