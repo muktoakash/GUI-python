@@ -91,22 +91,22 @@ class FinanceApp(QMainWindow):
         self.model.clear()
 
         self.model.setHorizontalHeaderLabels(["Year", "Total"])
-        total = initial_investment
 
-        for year in range(1, num_years + 1):
-            total += total * (interest_rate / 100)
-            item_year = QStandardItem(str(year))
-            item_total = QStandardItem("{:.2f}".format(total))
-            self.model.appendRow([item_year, item_total])
-
-        # Update chart with data
-        self.figure.clear()
-        plt.style.use('seaborn-v0_8-darkgrid')
-        ax = self.figure.subplots()
         years = list(range(1, num_years + 1))
         totals = [initial_investment * (1 + interest_rate/100)**year
                   for year in years]
 
+        # Calculate and Populate data
+        for year in years:
+            item_year = QStandardItem(str(year))
+            item_total = QStandardItem(f'{totals[year-1] :.2f}')
+            self.model.appendRow([item_year, item_total])
+
+        # Update chart with data
+        self.figure.clear()
+
+        plt.style.use('seaborn-v0_8-darkgrid')
+        ax = self.figure.subplots()
         ax.plot(years, totals)
         ax.set_title("Interest Chart")
         ax.set_xlabel("Year")
