@@ -1,6 +1,7 @@
+import os
 import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
-    QTreeView, QLineEdit, QMainWindow, QLabel, \
+    QTreeView, QLineEdit, QMainWindow, QLabel, QFileDialog, \
     QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -99,6 +100,28 @@ class FinanceApp(QMainWindow):
         ax.set_xlabel("Year")
         ax.set_ylabel("Total")
         self.canvas.draw()
+
+    def save_data(self):
+        dir_path = QFileDialog.getExistingDirectory(self, "Select Directory")
+        if dir_path:
+            folder_path = os.path.join(dir_path, "Saved")
+            os.mkdir(folder_path)
+
+            file_path = os.path.join(folder_path, "results.csv")
+            with open(file_path) as file:
+                file.write("Year, Total\n")
+                for row in range(self.model.rowCount()):
+                    year = self.model.index(row, 0).data()
+                    total = self.model.index(row, 1).data()
+                    file.write(f'{year}, {total}\n')
+
+            plt.savefig("Saved/chart.png")
+
+            QMessageBox.information(self, "Save Reusults",
+                                "Results we saved to your Folder")
+
+        else:
+            QMessageBox.warning(self, "Save Results", "No directory selected")
 
     def reset(self):
         self.rate_input.clear()
