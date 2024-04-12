@@ -1,3 +1,7 @@
+"""
+./
+"""
+
 import os
 import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
