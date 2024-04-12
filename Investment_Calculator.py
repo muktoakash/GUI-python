@@ -1,7 +1,8 @@
 """
 ./investment_calculator.py
 
-Calculates and graphically displays the value of an investment over the years compounded at a given interest rate.
+Calculates and graphically displays the value of an investment
+over the years compounded at a given interest rate.
 """
 
 # imports
