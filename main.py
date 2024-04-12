@@ -133,7 +133,7 @@ class FinanceApp(QMainWindow):
         self.model.clear()
 
         self.figure.clear()
-        self.canvas.clear()
+        self.canvas.draw()
 
 if __name__ == "__main__":
     app = QApplication([])
