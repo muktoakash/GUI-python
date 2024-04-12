@@ -32,6 +32,7 @@ class FinanceApp(QMainWindow):
 
         self.calc_button = QPushButton("Calculate")
         self.clear_button = QPushButton("Clear")
+        self.save_button = QPushButton("Save")
 
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
@@ -54,6 +55,7 @@ class FinanceApp(QMainWindow):
         self.col1.addWidget(self.tree_view)
         self.col1.addWidget(self.calc_button)
         self.col1.addWidget(self.clear_button)
+        self.col1.addWidget(self.save_button)
 
         self.col2.addWidget(self.canvas)
 
@@ -68,6 +70,7 @@ class FinanceApp(QMainWindow):
 
         self.calc_button.clicked.connect(self.calc_interest)
         self.clear_button.clicked.connect(self.reset)
+        self.save_button.clicked.connect(self.save_data)
 
     def calc_interest(self):
         initial_investment = None
