@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, \
     QTreeView, QLineEdit, QMainWindow, QLabel, \
     QVBoxLayout, QHBoxLayout, QMessageBox
-from PyQt5.QtGui import QStandardItemModel,
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 class FinanceApp(QMainWindow):
