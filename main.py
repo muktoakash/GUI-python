@@ -87,6 +87,19 @@ class FinanceApp(QMainWindow):
             item_total = QStandardItem("{:.2f}".format(total))
             self.model.appendRow([item_year, item_total])
 
+        # Update chart with data
+        self.figure.clear()
+        ax = self.figure.subplots()
+        years = list(range(1, num_years + 1))
+        totals = [initial_investment * (1 + interest_rate/100)**year
+                  for year in years]
+
+        ax.plot(years, totals)
+        ax.set_title("Interest Chart")
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Total")
+        self.canvas.draw()
+
     def reset(self):
         self.rate_input.clear()
         self.initial_input.clear()
