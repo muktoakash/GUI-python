@@ -14,7 +14,7 @@ mappings = {
             "Original": lambda image: image,
             "B/W" : lambda image: image.convert("L"),
             "Color" : lambda image: ImageEnhance.Color(image).enhance(1.2),
-            "Contrast" : lambda image: ImageEnhance.Contrast(image).enhance(1.2),
+            "Contrast" : lambda image: ImageEnhance.contrast(image).enhance(1.2),
             "Blur" : lambda image: image.filter(ImageFilter.BLUR),
             "Left" : lambda image: image.transpose(Image.ROTATE_90),
             "Right" : lambda image: image.transpose(Image.ROTATE_270),
