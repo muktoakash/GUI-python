@@ -1,5 +1,6 @@
+"""./Demo_App.py"""
 # imports
-from tkinter import Tk, Label, Entry, Button, StringVar, Text
+from tkinter import Tk, Label, Entry, Button, StringVar, Text, mainloop
 
 """
 TK() allows opeing a graphical interface, otherwise the program closes.
@@ -49,3 +50,6 @@ def read_file():
     value = float(entry_soft.get()) # .get() retrieves the content of a widget
     text.insert(END, value) #alue of text would be inputted at the END and 
                             #also takes the value of entry_soft
+
+# Run
+open_program.mainloop()
