@@ -54,13 +54,11 @@ class DemoApp():
         self.entry.bind("<FocusIn>", self.on_click)             # Or in Focus
 
         # Layout
-        """
-        Tkinter has two main ways to organize widgets within the window — .pack() and .grid().
 
-        .pack() stacks widgets vertically or horizontally in the window.
+        # Tkinter has two main ways to organize widgets within the window — .pack() and .grid().
+        # .pack() stacks widgets vertically or horizontally in the window.
+        # .grid() positions widgets in a tabular grid format by specifying rows and columns.
 
-        .grid() positions widgets in a tabular grid format by specifying rows and columns.
-        """
         self.entry_soft.set("Enter Number")
         self.entry.grid(row=0, column=0) # align the label and input side-by-side
         self.text.grid(row=1, column=0)  # creates an Entry box and a Text box
