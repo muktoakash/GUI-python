@@ -1,10 +1,10 @@
-"""./Demo_App.py
+"""./demo_app.py
 
 Simple dempnstration of Tkinter set up.
 """
 
 # imports
-from tkinter import Tk, Label, Entry, Button, StringVar, Text, END
+from tkinter import Tk, Entry, Button, StringVar, Text, END
 
 class DemoApp():
     """Simple app to demonstrate tkinter GUI set up.
@@ -24,10 +24,8 @@ class DemoApp():
     def __init__(self):
         """Initialize the app with root and widgets"""
 
-        """
-        TK() allows opeing a graphical interface, otherwise the program closes.
-        It creates the root window, which is assigned to open_program.
-        """
+        # TK() allows opeing a graphical interface, otherwise the program closes.
+        # It creates the root window, which is assigned to open_program.
         self.open_program = Tk()
 
         # Title
@@ -37,7 +35,7 @@ class DemoApp():
 
         # self.message = Label(self.open_program, text="Welcome to the Demo App")
         # Input
-        self.entry_soft = StringVar()       # Creates a Tkinter StringVar object 
+        self.entry_soft = StringVar()       # Creates a Tkinter StringVar object
                                             # to hold data for an Entry widget.
         # TextBox
         self.text = Text(self.open_program, height=2, width=23)   # Creates a Text widget
@@ -47,9 +45,9 @@ class DemoApp():
 
 
         # Initialize entry
-        self.entry = Entry(self.open_program, textvariable=self.entry_soft)    
-                                                                # Creates an Entry widget 
-                                                                # that will display/edit 
+        self.entry = Entry(self.open_program, textvariable=self.entry_soft)
+                                                                # Creates an Entry widget
+                                                                # that will display/edit
                                                                 # the text in entry_soft.
         self.entry.config(foreground='gray')
         self.entry.bind("<Button-1>", self.on_click)            # Clear default on click
@@ -78,15 +76,15 @@ class DemoApp():
         try:
             self.text.delete("1.0", "end") # clear text box
             value = float(self.entry_soft.get()) # .get() retrieves the content of a widget
-            self.text.insert(END, value) #alue of text would be inputted at the END and 
+            self.text.insert(END, value) #alue of text would be inputted at the END and
                                 #also takes the value of entry_soft
             self.entry.delete(0, END)
         except ValueError:
             value = "Please insert a number above"
-            self.text.insert(END, value) #alue of text would be inputted at the END and 
+            self.text.insert(END, value) #alue of text would be inputted at the END and
                                 #also takes the value of entry_soft
             self.entry.delete(0, END)
-    
+
     def on_click(self, event):
         """Clears default value for entry"""
 
