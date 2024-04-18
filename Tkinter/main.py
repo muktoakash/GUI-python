@@ -1,9 +1,25 @@
-"""./Demo_App.py"""
+"""./Demo_App.py
+
+Simple dempnstration of Tkinter set up.
+"""
+
 # imports
 from tkinter import Tk, Label, Entry, Button, StringVar, Text, END
 
 class DemoApp():
-    """Simple app to demonstrate tkinter GUI set up."""
+    """Simple app to demonstrate tkinter GUI set up.
+    
+    Attributes:
+    - open_program  : Tkinter root
+    - entry_soft    : StringVar
+    - entry         : Text
+    - button        : Button
+    
+    Methods:
+    private:
+        read_file()
+        on_click(event)
+    """
 
     def __init__(self):
         """Initialize the app with root and widgets"""
@@ -73,7 +89,7 @@ class DemoApp():
     
     def on_click(self, event):
         """Clears default value for entry"""
-        
+
         self.entry.config(foreground='black')
         if self.entry.get() == "Enter Number":
             event.widget.delete(0, END)
