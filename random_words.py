@@ -10,8 +10,11 @@ from random import choice
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 
-from nltk.corpus import words
+# imports to use for words
+from nltk.corpus import wordnet as wn
 
+# global constant:
+NUM_RANDOM_WORDS = 3 # currently only choosing three random words
 
 # Main App Objects and Settings
 app = QApplication([])
@@ -31,7 +34,8 @@ button1 = QPushButton("Click Me")
 button2 = QPushButton("Click Me")
 button3 = QPushButton("Click Me")
 
-word_list = words.words() # Use all words in nltk corpus
+# Use all words in nltk corpus with a meaning
+word_list = list(word for word in wn.words() if word.isalpha())
 
 # All Design Here
 master_layout = QVBoxLayout()
@@ -56,25 +60,26 @@ master_layout.addLayout(row3)
 main_window.setLayout(master_layout)
 
 # Getting a Random Word from a List
-def random_word1():
-    """Choses a random word for text1"""
-    word = choice(word_list)
-    text1.setText(word)
+random_words = list(range(NUM_RANDOM_WORDS))
 
-def random_word2():
-    """Choses a random word for text2"""
+# Getting a Random Word from a List
+def random_word(btn):
+    """
+    Chooses a random word to append to random_words
+    side-effect: Modifies random_words
+    """
     word = choice(word_list)
-    text2.setText(word)
-
-def random_word3():
-    """Choses a random word for text3"""
-    word = choice(word_list)
-    text3.setText(word)
+    while word in random_words:
+        word = choice(word_list)
+    random_words[btn] = word
 
 # Events
-button1.clicked.connect(random_word1)
-button2.clicked.connect(random_word2)
-button3.clicked.connect(random_word3)
+button1.clicked.connect(lambda: (random_word(0),
+                         text1.setText(random_words[0])))
+button2.clicked.connect(lambda: (random_word(1),
+                         text2.setText(random_words[1])))
+button3.clicked.connect(lambda: (random_word(2),
+                         text3.setText(random_words[2])))
 
 # Show/Run our App
 main_window.show()
