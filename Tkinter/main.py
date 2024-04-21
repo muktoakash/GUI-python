@@ -35,7 +35,8 @@ button1 = QPushButton("Click Me")
 button2 = QPushButton("Click Me")
 button3 = QPushButton("Click Me")
 
-word_list = words.words() # Use all words in nltk corpus
+# Use all words in nltk corpus with a meaning
+word_list = list(word for word in wn.words() if word.isalpha())
 
 # All Design Here
 master_layout = QVBoxLayout()
