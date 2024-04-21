@@ -8,7 +8,7 @@ the nltk.corpus at the press of buttons.
 from random import choice
 
 # imports
-from tkinter import Tk, Entry, Button, StringVar, Text, Label, END
+from tkinter import Tk, Button, Label, messagebox, END
 
 # imports to use for words
 from nltk.corpus import wordnet as wn
@@ -34,13 +34,17 @@ class RandomWords():
         self.word_list = list(word for word in wn.words() if word.isalpha())
 
         # Create all App Objects
-        self.text1 = Label(self.root, text="?", height=2, width=30, relief="raised")
-        self.text2 = Label(self.root, text="?", height=2, width=30, relief="raised")
-        self.text3 = Label(self.root, text="?", height=2, width=30, relief="raised")
+        self.text1 = Button(self.root, text="?", height=2, width=30, \
+                            command=lambda : self.check_answer(0))
+        self.text2 = Button(self.root, text="?", height=2, width=30, \
+                            command=lambda : self.check_answer(1))
+        self.text3 = Button(self.root, text="?", height=2, width=30, \
+                            command=lambda : self.check_answer(2))
 
         self.random_words = [self.text1, self.text2, self.text3]
 
         self.answer = "?"
+        self.parts_of_speech = "?"
         self.meaning = Label(self.root, text="?", height=5, width=100)
 
         # Widgets
@@ -53,6 +57,7 @@ class RandomWords():
         self.meaning.grid(row=2, column=1)
 
         # Initialize
+        self.play_game()
 
     # Getting Random Words
     def random_word(self):
@@ -91,6 +96,19 @@ class RandomWords():
         random_key = choice(list(means.keys()))
         random_meaning = choice(list(means[random_key]))
         self.meaning["text"] = random_meaning
+        self.parts_of_speech = random_key
+
+    def check_answer(self, btn_num):
+        if self.random_words[btn_num]["text"] == self.answer:
+            messagebox.showinfo("You got it!",\
+                                f'{self.answer} - \n' + \
+                                f'{self.parts_of_speech} : {self.meaning["text"]}')
+        else:
+            messagebox.showerror("Sorry", \
+                                f'The right answer was \n' + \
+                                f'{self.answer} - \n' + \
+                                f'{self.parts_of_speech} : {self.meaning["text"]}')
+
 
 
 
