@@ -100,14 +100,20 @@ class RandomWords():
 
     def check_answer(self, btn_num):
         if self.random_words[btn_num]["text"] == self.answer:
-            messagebox.showinfo("You got it!",\
+            response = messagebox.askyesno("You got it!",\
                                 f'{self.answer} - \n' + \
-                                f'{self.parts_of_speech} : {self.meaning["text"]}')
+                                f'{self.parts_of_speech} : {self.meaning["text"]}',
+                                icon = 'info')
         else:
-            messagebox.showerror("Sorry", \
+            response = messagebox.askyesno("Sorry", \
                                 f'The right answer was \n' + \
                                 f'{self.answer} - \n' + \
-                                f'{self.parts_of_speech} : {self.meaning["text"]}')
+                                f'{self.parts_of_speech} : {self.meaning["text"]}',
+                                icon = 'error')
+        if response:
+            self.play_game()
+        else:
+            self.root.destroy()
 
 
 
