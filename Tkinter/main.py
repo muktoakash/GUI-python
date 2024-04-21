@@ -8,7 +8,8 @@ the nltk.corpus at the press of buttons.
 from random import choice
 
 # imports
-from tkinter import Tk, Button, Label, messagebox, END
+from tkinter import Tk, Button, Label, messagebox,\
+     LabelFrame, END
 
 # imports to use for words
 from nltk.corpus import wordnet as wn
@@ -30,14 +31,19 @@ class RandomWords():
         # Title
         self.root.title("Vocab Show Down!")
 
+        # Frame
+        self.game_frame = LabelFrame(self.root,
+                                     text="Show off your vocabulary!",
+                                     padx=50, pady=50)
+
         # Create all App Objects
-        self.text1 = Button(self.root, text="?", height=2, width=30, \
+        self.text1 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(0))
-        self.text2 = Button(self.root, text="?", height=2, width=30, \
+        self.text2 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(1))
-        self.text3 = Button(self.root, text="?", height=2, width=30, \
+        self.text3 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(2))
-        self.button = Button(self.root, text="Play Again!", command = self.play_game)
+        self.give_up = Button(self.game_frame, text="Pass!", command = self.pass_round, height=3, width=60)
 
         self.random_words = [self.text1, self.text2, self.text3]
 
@@ -47,16 +53,18 @@ class RandomWords():
         # Game variables
         self.answer = "?"
         self.parts_of_speech = "?"
-        self.meaning = Label(self.root, text="?", height=5, width=100)
+        self.meaning = Label(self.game_frame, text="?", height=5, width=100)
         self.correct = 0
         self.wrong = 0
+        self.passed = 0
 
         # Layout
+        self.game_frame.pack(padx=5, pady=5)
         self.meaning.grid(row=0, column=1)
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
 
-        self.button.grid(row=3, column=1)
+        self.give_up.grid(row=3, column=1, padx=10, pady=10)
 
         # Initialize
         self.play_game()
@@ -119,6 +127,9 @@ class RandomWords():
         else:
             self.root.destroy()
 
+    def pass_round(self):
+        self.passed += 1
+        self.play_game()
 
 # Show/Run our App
 if __name__== "__main__":
