@@ -10,8 +10,8 @@ from random import choice
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 
-from nltk.corpus import words
-
+from nltk.corpus import wordnet as wn
+from PyDictionary import PyDictionary
 
 # Main App Objects and Settings
 app = QApplication([])
