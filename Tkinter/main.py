@@ -43,7 +43,7 @@ class RandomWords():
                             command=lambda : self.check_answer(1))
         self.text3 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(2))
-        self.button = Button(self.game_frame, text="Play Again!", command = self.play_game)
+        self.give_up = Button(self.game_frame, text="Pass!", command = self.pass_round, height=3, width=60)
 
         self.random_words = [self.text1, self.text2, self.text3]
 
@@ -56,6 +56,7 @@ class RandomWords():
         self.meaning = Label(self.game_frame, text="?", height=5, width=100)
         self.correct = 0
         self.wrong = 0
+        self.passed = 0
 
         # Layout
         self.game_frame.pack(padx=5, pady=5)
@@ -63,7 +64,7 @@ class RandomWords():
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
 
-        self.button.grid(row=3, column=1)
+        self.give_up.grid(row=3, column=1, padx=10, pady=10)
 
         # Initialize
         self.play_game()
@@ -126,6 +127,9 @@ class RandomWords():
         else:
             self.root.destroy()
 
+    def pass_round(self):
+        self.passed += 1
+        self.play_game()
 
 # Show/Run our App
 if __name__== "__main__":
