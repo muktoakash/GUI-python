@@ -53,14 +53,14 @@ class RandomWords():
         # Game variables
         self.answer = "?"
         self.parts_of_speech = "?"
-        self.meaning = Label(self.game_frame, text="?", height=5, width=100)
+        self.meaning = Label(self.game_frame, text="?", height=5, width=100, wraplength=700)
         self.correct = 0
         self.wrong = 0
         self.passed = 0
 
         # Layout
         self.game_frame.pack(padx=5, pady=5)
-        self.meaning.grid(row=0, column=1)
+        self.meaning.grid(row=0, column=0, columnspan=3, sticky='E'+'W',)
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
 
