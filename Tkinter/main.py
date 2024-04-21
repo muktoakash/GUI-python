@@ -23,31 +23,18 @@ root = Tk()
 # Title
 root.title("Vocab Show Down!")
 
-# Widgets
-button = (root, text="Get New Random Words!", command=set_words)
+# Functionalities:
 
 # Create all App Objects
-word1 = StringVar()
-word2 = StringVar()
-word3 = StringVar()
-text1 = Label(root, text=word1)
-text2 = Label(root, text=word2)
-text3 = Label(root, text=word3)
+text1 = Label(root, text="?", height=2, width=30, relief="raised")
+text2 = Label(root, text="?", height=2, width=30, relief="raised")
+text3 = Label(root, text="?", height=2, width=30, relief="raised")
 
 # Use all words in nltk corpus with a meaning
 word_list = list(word for word in wn.words() if word.isalpha())
 
-# All Design Here
-button.grid(row=0, column=1)
-text1.grid(row=1, column=0)
-text2.grid(row=1, column=1)
-text3.grid(row=1, column=2)
-
 # Getting a Random Word from a List
-random_words = [word1, word2, word3]
-
-# Functionalities:
-
+random_words = [text1, text2, text3]
 # Getting Random Words
 def random_word():
     """
@@ -58,14 +45,22 @@ def random_word():
         word = choice(word_list)
         while word in random_words:
             word = choice(word_list)
-        random_words[index].set(word)
+        random_words[index].configure(text =word)
+
+
+# Widgets
+button = Button(root, text="Get New Random Words!", command = random_word)
+
+# All Design Here
+button.grid(row=0, column=1)
+text1.grid(row=1, column=0)
+text2.grid(row=1, column=1)
+text3.grid(row=1, column=2)
+
 
 # Events
-def initialize():
-    word1.set("?")
-    word2.set("?")
-    word3.set("?")
+
 
 # Show/Run our App
-initialize()
+
 root.mainloop()
