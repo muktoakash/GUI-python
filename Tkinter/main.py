@@ -62,25 +62,24 @@ main_window.setLayout(master_layout)
 # Getting a Random Word from a List
 random_words = list(range(NUM_RANDOM_WORDS))
 
-def random_word1():
-    """Choses a random word for text1"""
+# Getting a Random Word from a List
+def random_word(btn):
+    """
+    Chooses a random word to append to random_words
+    side-effect: Modifies random_words
+    """
     word = choice(word_list)
-    text1.setText(word)
-
-def random_word2():
-    """Choses a random word for text2"""
-    word = choice(word_list)
-    text2.setText(word)
-
-def random_word3():
-    """Choses a random word for text3"""
-    word = choice(word_list)
-    text3.setText(word)
+    while word in random_words:
+        word = choice(word_list)
+    random_words[btn] = word
 
 # Events
-button1.clicked.connect(random_word1)
-button2.clicked.connect(random_word2)
-button3.clicked.connect(random_word3)
+button1.clicked.connect(lambda: (random_word(0),
+                         text1.setText(random_words[0])))
+button2.clicked.connect(lambda: (random_word(1),
+                         text2.setText(random_words[1])))
+button3.clicked.connect(lambda: (random_word(2),
+                         text3.setText(random_words[2])))
 
 # Show/Run our App
 main_window.show()
