@@ -40,16 +40,19 @@ class RandomWords():
 
         self.random_words = [self.text1, self.text2, self.text3]
 
+        self.answer = "?"
+        self.meaning = Label(self.root, text="?", height=5, width=100)
+
         # Widgets
-        self.button = Button(self.root, text="Get New Random Words!", command = self.random_word)
+        self.button = Button(self.root, text="Play Again!", command = self.play_game)
 
         # Layout
         self.button.grid(row=0, column=1)
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
-        # self.text1.grid(row=1, column=0)
-        # self.text2.grid(row=1, column=1)
-        # self.text3.grid(row=1, column=2)
+        self.meaning.grid(row=2, column=1)
+
+        # Initialize
 
     # Getting Random Words
     def random_word(self):
@@ -57,13 +60,38 @@ class RandomWords():
         Chooses a random word to append to random_words
         side-effect: Modifies random_words
         """
+
+        def get_synonyms(word):
+            """
+            helper function to get all synonyms of a word
+            """
+            synset = set()
+            for similar in wn.synonyms(word):
+                for syn in similar:
+                    if syn.isalpha():
+                        synset.add(syn)
+            return synset
+
         for index in range(NUM_RANDOM_WORDS):
             current_words = [self.random_words[i]["text"] \
                               for i in range(NUM_RANDOM_WORDS)]
             word = choice(self.word_list)
-            while word in current_words:
+            synonyms = get_synonyms(word).union(*[get_synonyms(wd)\
+                                                   for wd in current_words])
+            while word in current_words or word in synonyms:
                 word = choice(word_list)
-            self.random_words[index].configure(text =word)
+            self.random_words[index].configure(text=word)
+
+    def play_game(self):
+        self.random_word()
+        current_words = [self.random_words[i]["text"] \
+                              for i in range(NUM_RANDOM_WORDS)]
+        self.answer = choice(current_words)
+        means = PyDictionary.meaning(self.answer)
+        random_key = choice(list(means.keys()))
+        random_meaning = choice(list(means[random_key]))
+        self.meaning["text"] = random_meaning
+
 
 
 # Show/Run our App
