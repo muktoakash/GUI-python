@@ -30,9 +30,6 @@ class RandomWords():
         # Title
         self.root.title("Vocab Show Down!")
 
-        # Use all words in nltk corpus with a meaning
-        self.word_list = list(word for word in wn.words() if word.isalpha())
-
         # Create all App Objects
         self.text1 = Button(self.root, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(0))
@@ -40,21 +37,26 @@ class RandomWords():
                             command=lambda : self.check_answer(1))
         self.text3 = Button(self.root, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(2))
+        self.button = Button(self.root, text="Play Again!", command = self.play_game)
 
         self.random_words = [self.text1, self.text2, self.text3]
 
+        # Use all words in nltk corpus with a meaning
+        self.word_list = list(word for word in wn.words() if word.isalpha())
+
+        # Game variables
         self.answer = "?"
         self.parts_of_speech = "?"
         self.meaning = Label(self.root, text="?", height=5, width=100)
-
-        # Widgets
-        self.button = Button(self.root, text="Play Again!", command = self.play_game)
+        self.correct = 0
+        self.wrong = 0
 
         # Layout
-        self.button.grid(row=0, column=1)
+        self.meaning.grid(row=0, column=1)
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
-        self.meaning.grid(row=2, column=1)
+
+        self.button.grid(row=3, column=1)
 
         # Initialize
         self.play_game()
@@ -100,11 +102,13 @@ class RandomWords():
 
     def check_answer(self, btn_num):
         if self.random_words[btn_num]["text"] == self.answer:
+            self.correct += 1
             response = messagebox.askyesno("You got it!",\
                                 f'{self.answer} - \n' + \
                                 f'{self.parts_of_speech} : {self.meaning["text"]}',
                                 icon = 'info')
         else:
+            self.wrong += 1
             response = messagebox.askyesno("Sorry", \
                                 f'The right answer was \n' + \
                                 f'{self.answer} - \n' + \
@@ -114,8 +118,6 @@ class RandomWords():
             self.play_game()
         else:
             self.root.destroy()
-
-
 
 
 # Show/Run our App
