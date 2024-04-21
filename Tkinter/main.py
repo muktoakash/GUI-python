@@ -98,6 +98,13 @@ class RandomWords():
             self.random_words[index].configure(text=word)
 
     def play_game(self):
+
+        def fix_parentheses(input_str):
+            "helper function to fix unmatched parenthesis in meanting"
+            if "(" in input_str and ")" not in input_str:
+                input_str = input_str + ")"
+            return input_str
+
         self.random_word()
         current_words = [self.random_words[i]["text"] \
                               for i in range(NUM_RANDOM_WORDS)]
@@ -105,6 +112,7 @@ class RandomWords():
         means = PyDictionary.meaning(self.answer)
         random_key = choice(list(means.keys()))
         random_meaning = choice(list(means[random_key]))
+        random_meaning = fix_parentheses(random_meaning)
         self.meaning["text"] = random_meaning
         self.parts_of_speech = random_key
 
