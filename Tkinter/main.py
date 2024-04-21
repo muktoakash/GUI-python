@@ -38,6 +38,10 @@ text3 = Label(root, text=word3)
 word_list = list(word for word in wn.words() if word.isalpha())
 
 # All Design Here
+button.grid(row=0, column=1)
+text1.grid(row=1, column=0)
+text2.grid(row=1, column=1)
+text3.grid(row=1, column=2)
 
 # Getting a Random Word from a List
 random_words = [word1, word2, word3]
