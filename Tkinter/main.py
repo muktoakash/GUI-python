@@ -17,50 +17,56 @@ from PyDictionary import PyDictionary
 # global constant:
 NUM_RANDOM_WORDS = 3 # currently only choosing three random words
 
-# Main App Objects and Settings
-root = Tk()
-
-# Title
-root.title("Vocab Show Down!")
-
-# Functionalities:
-
-# Create all App Objects
-text1 = Label(root, text="?", height=2, width=30, relief="raised")
-text2 = Label(root, text="?", height=2, width=30, relief="raised")
-text3 = Label(root, text="?", height=2, width=30, relief="raised")
-
-# Use all words in nltk corpus with a meaning
-word_list = list(word for word in wn.words() if word.isalpha())
-
-# Getting a Random Word from a List
-random_words = [text1, text2, text3]
-# Getting Random Words
-def random_word():
+# Class for main app
+class RandomWords():
     """
-    Chooses a random word to append to random_words
-    side-effect: Modifies random_words
+    Creates a Tk() object to play the game.
     """
-    for index in range(NUM_RANDOM_WORDS):
-        word = choice(word_list)
-        while word in random_words:
-            word = choice(word_list)
-        random_words[index].configure(text =word)
+    def __init__(self):
+        """Initialize"""
+        # Main App Objects and Settings
+        self.root = Tk()
 
+        # Title
+        self.root.title("Vocab Show Down!")
 
-# Widgets
-button = Button(root, text="Get New Random Words!", command = random_word)
+        # Use all words in nltk corpus with a meaning
+        self.word_list = list(word for word in wn.words() if word.isalpha())
 
-# All Design Here
-button.grid(row=0, column=1)
-text1.grid(row=1, column=0)
-text2.grid(row=1, column=1)
-text3.grid(row=1, column=2)
+        # Create all App Objects
+        self.text1 = Label(self.root, text="?", height=2, width=30, relief="raised")
+        self.text2 = Label(self.root, text="?", height=2, width=30, relief="raised")
+        self.text3 = Label(self.root, text="?", height=2, width=30, relief="raised")
 
+        self.random_words = [self.text1, self.text2, self.text3]
 
-# Events
+        # Widgets
+        self.button = Button(self.root, text="Get New Random Words!", command = self.random_word)
+
+        # Layout
+        self.button.grid(row=0, column=1)
+        for index in range(NUM_RANDOM_WORDS):
+            self.random_words[index].grid(row = 1, column = index)
+        # self.text1.grid(row=1, column=0)
+        # self.text2.grid(row=1, column=1)
+        # self.text3.grid(row=1, column=2)
+
+    # Getting Random Words
+    def random_word(self):
+        """
+        Chooses a random word to append to random_words
+        side-effect: Modifies random_words
+        """
+        for index in range(NUM_RANDOM_WORDS):
+            current_words = [self.random_words[i]["text"] \
+                              for i in range(NUM_RANDOM_WORDS)]
+            word = choice(self.word_list)
+            while word in current_words:
+                word = choice(word_list)
+            self.random_words[index].configure(text =word)
 
 
 # Show/Run our App
-
-root.mainloop()
+if __name__== "__main__":
+    app = RandomWords()
+    app.root.mainloop()
