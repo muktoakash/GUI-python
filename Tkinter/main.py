@@ -10,8 +10,12 @@ from random import choice
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout
 
+# imports to use for words
 from nltk.corpus import wordnet as wn
 from PyDictionary import PyDictionary
+
+# global constant:
+NUM_RANDOM_WORDS = 3 # currently only choosing three random words
 
 # Main App Objects and Settings
 app = QApplication([])
@@ -56,6 +60,8 @@ master_layout.addLayout(row3)
 main_window.setLayout(master_layout)
 
 # Getting a Random Word from a List
+random_words = list(range(NUM_RANDOM_WORDS))
+
 def random_word1():
     """Choses a random word for text1"""
     word = choice(word_list)
