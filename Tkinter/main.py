@@ -111,7 +111,24 @@ class RandomWords():
                                         + str(self.current_level),
                                         font = ("Helvetica", 15),
                                         bootstyle=SUCCESS)
+
         # Bottom Objects
+        self.display_result = ttk.LabelFrame(self.root,
+                                             text="Result",
+                                             bootstyle=SUCCESS)
+        self.display_answer = ttk.Label(self.display_result,
+                                        text="Click a word above to see the result",
+                                        font=("Courier", 15),
+                                        bootstyle=SUCCESS)
+        self.proceed = ttk.Button(self.display_result,
+                                    text="Next Round >>",
+                                    bootstyle = WARNING,
+                                    command=self.next_round,
+                                    state=DISABLED )
+        self.leave = ttk.Button(self.display_result,
+                                text="Quit Game",
+                                bootstyle = DANGER,
+                                command=self.root.destroy)
 
         # Layout
         # self.root.geometry("800x600")
@@ -131,6 +148,12 @@ class RandomWords():
             self.random_words[index].grid(row = 1, column = index)
 
         self.give_up.grid(row=3, column=1, pady=15)
+
+        self.display_result.pack(padx=15, pady=15)
+        self.display_answer.grid(row=0, column=0,
+                                 columnspan=2, padx=50, pady=15, sticky="ew")
+        self.proceed.grid(row=1, column=1, padx=50, pady=15, sticky="ew")
+        self.leave.grid(row=1, column=0, padx=50, pady=15, sticky="ew")
 
         # Initialize
         self.play_game()
@@ -173,7 +196,8 @@ class RandomWords():
 
         # Start by checking win condition
         if self.WIN == True:
-            return False
+            messagebox.showinfo("Winner!", "You Won!")
+            self.root.destroy()
         self.random_word()
         current_words = [self.random_words[i]["text"] \
                               for i in range(NUM_RANDOM_WORDS)]
@@ -247,7 +271,7 @@ class RandomWords():
             assert (1 <= level) and (level < LEVELS)
             assert exp_req >= 0
         except AssertionError as e:
-            messagebox.ERROR("Assertions Failed", "Something went wrong, exiting program")
+            messagebox.showerror("Assertions Failed", "Something went wrong, exiting program")
             self.root.destroy()
 
         multiplier = self.exp_multiplier(level)
@@ -261,6 +285,9 @@ class RandomWords():
             if self.current_level == LEVELS:
                 self.WIN = True
         return exp
+
+    def next_round(self):
+        pass
 
 
 
