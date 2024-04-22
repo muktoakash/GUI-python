@@ -8,12 +8,8 @@ the nltk.corpus at the press of buttons.
 from random import choice
 
 # imports
-# from tkinter import Tk, Button, Label, messagebox,\
-#      LabelFrame
-# import ttkbootstrap as ttk
-from ttkbootstrap import  Button, Label,\
-    LabelFrame, Window
-from ttkbootstrap.constants import *
+from tkinter import Tk, Button, Label, messagebox,\
+     LabelFrame, END
 
 # imports to use for words
 from nltk.corpus import wordnet as wn
@@ -30,24 +26,24 @@ class RandomWords():
     def __init__(self):
         """Initialize"""
         # Main App Objects and Settings
-        self.root = Window(themename="cyborg")
+        self.root = Tk()
 
         # Title
         self.root.title("Vocab Show Down!")
 
         # Frame
         self.game_frame = LabelFrame(self.root,
-                                     text="Show off your vocabulary!",)
-                                    #  padx=50, pady=50)
+                                     text="Show off your vocabulary!",
+                                     padx=50, pady=50)
 
         # Create all App Objects
-        self.text1 = Button(self.game_frame, text="?", \
+        self.text1 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(0))
-        self.text2 = Button(self.game_frame, text="?", \
+        self.text2 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(1))
-        self.text3 = Button(self.game_frame, text="?", \
+        self.text3 = Button(self.game_frame, text="?", height=2, width=30, \
                             command=lambda : self.check_answer(2))
-        self.give_up = Button(self.game_frame, text="Pass!", command = self.pass_round,)
+        self.give_up = Button(self.game_frame, text="Pass!", command = self.pass_round, height=3, width=60)
 
         self.random_words = [self.text1, self.text2, self.text3]
 
@@ -57,7 +53,7 @@ class RandomWords():
         # Game variables
         self.answer = "?"
         self.parts_of_speech = "?"
-        self.meaning = Label(self.game_frame, text="?", wraplength=700)
+        self.meaning = Label(self.game_frame, text="?", height=5, width=100, wraplength=700)
         self.correct = 0
         self.wrong = 0
         self.passed = 0
@@ -115,21 +111,21 @@ class RandomWords():
     def check_answer(self, btn_num):
         if self.random_words[btn_num]["text"] == self.answer:
             self.correct += 1
-            # response = messagebox.askyesno("You got it!",\
-                                # f'{self.answer} - \n' + \
-                                # f'{self.parts_of_speech} : {self.meaning["text"]}',
-                                # icon = 'info')
+            response = messagebox.askyesno("You got it!",\
+                                f'{self.answer} - \n' + \
+                                f'{self.parts_of_speech} : {self.meaning["text"]}',
+                                icon = 'info')
         else:
             self.wrong += 1
-            # response = messagebox.askyesno("Sorry", \
-                                # f'The right answer was \n' + \
-                                # f'{self.answer} - \n' + \
-                                # f'{self.parts_of_speech} : {self.meaning["text"]}',
-                                # icon = 'error')
-        # if response:
-        #     self.play_game()
-        # else:
-        #     self.root.destroy()
+            response = messagebox.askyesno("Sorry", \
+                                f'The right answer was \n' + \
+                                f'{self.answer} - \n' + \
+                                f'{self.parts_of_speech} : {self.meaning["text"]}',
+                                icon = 'error')
+        if response:
+            self.play_game()
+        else:
+            self.root.destroy()
 
     def pass_round(self):
         self.passed += 1
