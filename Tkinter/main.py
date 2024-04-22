@@ -5,6 +5,7 @@ the nltk.corpus at the press of buttons.
 """
 
 # Import Modules
+from math import atan, pi
 from random import choice
 
 # imports
@@ -19,7 +20,7 @@ from PyDictionary import PyDictionary
 
 # global constant:
 NUM_RANDOM_WORDS = 3 # currently only choosing three random words
-LEVEL = 0
+LEVELS = 5 # Game ends when level 20 is reached
 
 # Class for main app
 class RandomWords():
@@ -71,7 +72,13 @@ class RandomWords():
         self.correct = 0
         self.wrong = 0
         self.passed = 0
-        self.exp_req = LEVEL+1 *
+
+        self.current_level = 1
+        self.exp_req = self.exp_multiplier(self.current_level + 1) * LEVELS
+        self.current_exp = self.exp_get(self.current_level, self.get_score())
+
+        self.WIN = False
+
 
         # Top objects:
         self.score_book = ttk.Label(self.root,
@@ -99,15 +106,24 @@ class RandomWords():
                                           + str(self.passed),
                                      font = ("Courier", 12))
 
+        self.display_level = ttk.Label(self.root,
+                                       text = "Current Level: " \
+                                        + str(self.current_level),
+                                        font = ("Helvetica", 15),
+                                        bootstyle=SUCCESS)
+        # Bottom Objects
 
         # Layout
         # self.root.geometry("800x600")
         self.score_book.pack(padx=15, pady=15)
 
+        self.display_level.pack(padx=15, pady=15)
+
         self.score_frame.pack(fill=X, padx=15, pady=15,)
         self.num_correct.grid(row=0, column=0, padx=100, sticky='nsew')
         self.num_wrong.grid(row=0, column=1, padx=100, sticky='nsew')
         self.num_passed.grid(row=0, column=2, padx=100, sticky='nsew')
+
 
         self.game_frame.pack(padx=5, pady=5, fill=X)
         self.meaning.grid(row=0, column=0, columnspan=3, sticky='E'+'W',)
@@ -155,6 +171,9 @@ class RandomWords():
                 input_str = input_str + ")"
             return input_str
 
+        # Start by checking win condition
+        if self.WIN == True:
+            return False
         self.random_word()
         current_words = [self.random_words[i]["text"] \
                               for i in range(NUM_RANDOM_WORDS)]
@@ -165,6 +184,7 @@ class RandomWords():
         random_meaning = fix_parentheses(random_meaning)
         self.meaning["text"] = random_meaning
         self.parts_of_speech = random_key
+        return True
 
     def check_answer(self, btn_num):
         if self.random_words[btn_num]["text"] == self.answer:
@@ -187,6 +207,12 @@ class RandomWords():
         self.num_correct["text"] = "Correct Answers: " + str(self.correct)
         self.num_wrong["text"] = "Wrong Answers: " + str(self.wrong)
 
+        self.exp_req = self.exp_multiplier(self.current_level + 1) * LEVELS
+        self.current_exp = self.exp_get(self.current_level, self.get_score())
+
+        self.display_level["text"] = "Current Level: " \
+                                        + str(self.current_level)
+
         if response:
             self.play_game()
         else:
@@ -198,7 +224,45 @@ class RandomWords():
         self.play_game()
 
     def get_score(self):
-        return 5 * self.correct - 2 * self.wrong
+        return max(5 * self.correct - 2 * self.wrong, 0)
+
+    def exp_multiplier(self, level):
+        return atan(self.current_level / LEVELS * pi /4 )
+
+    def exp_get(self, level, exp_req=LEVELS-1):
+        """self.exp_get(level, exp_req)
+
+        Computes the experience achieved at a certain level based on the score,
+        with the default being the maximum score allowed for the given level.
+
+        Side effects:
+        - conditionally modifies self.current_level
+        - conditionally modifies self.WIN
+
+        Requires:
+        1 <= level < LEVELS
+        0 <= exp_req
+        """
+        try:
+            assert (1 <= level) and (level < LEVELS)
+            assert exp_req >= 0
+        except AssertionError as e:
+            messagebox.ERROR("Assertions Failed", "Something went wrong, exiting program")
+            self.root.destroy()
+
+        multiplier = self.exp_multiplier(level)
+        if exp_req == LEVELS-1:
+            exp = exp_req * multiplier
+        else:
+            exp = (exp_req + 1) % (LEVELS + 1)
+            exp *= multiplier
+            if self.exp_get(level, LEVELS-1) - exp <= multiplier:
+                self.current_level += 1
+            if self.current_level == LEVELS:
+                self.WIN = True
+        return exp
+
+
 
 # Show/Run our App
 if __name__== "__main__":
