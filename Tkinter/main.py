@@ -5,6 +5,7 @@ the nltk.corpus at the press of buttons.
 """
 
 # Import Modules
+from time import sleep
 from math import atan, pi
 from random import choice
 
@@ -77,6 +78,7 @@ class RandomWords():
         self.exp_req = self.exp_multiplier(self.current_level + 1) * LEVELS
         self.current_exp = self.exp_get(self.current_level, self.get_score())
 
+        self.answer_checked_or_passed = True
         self.WIN = False
 
 
@@ -118,13 +120,14 @@ class RandomWords():
                                              bootstyle=SUCCESS)
         self.display_answer = ttk.Label(self.display_result,
                                         text="Click a word above to see the result",
+                                        wraplength=700,
                                         font=("Courier", 15),
                                         bootstyle=SUCCESS)
-        self.proceed = ttk.Button(self.display_result,
-                                    text="Next Round >>",
-                                    bootstyle = WARNING,
-                                    command=self.next_round,
-                                    state=DISABLED )
+        # self.proceed = ttk.Button(self.display_result,
+        #                             text="Next Round >>",
+        #                             bootstyle = WARNING,
+        #                             command=self.next_round,
+        #                             state=DISABLED )
         self.leave = ttk.Button(self.display_result,
                                 text="Quit Game",
                                 bootstyle = DANGER,
@@ -132,6 +135,8 @@ class RandomWords():
 
         # Layout
         # self.root.geometry("800x600")
+
+        # Top:
         self.score_book.pack(padx=15, pady=15)
 
         self.display_level.pack(padx=15, pady=15)
@@ -141,7 +146,7 @@ class RandomWords():
         self.num_wrong.grid(row=0, column=1, padx=100, sticky='nsew')
         self.num_passed.grid(row=0, column=2, padx=100, sticky='nsew')
 
-
+        #Game
         self.game_frame.pack(padx=5, pady=5, fill=X)
         self.meaning.grid(row=0, column=0, columnspan=3, sticky='E'+'W',)
         for index in range(NUM_RANDOM_WORDS):
@@ -149,14 +154,27 @@ class RandomWords():
 
         self.give_up.grid(row=3, column=1, pady=15)
 
+        # Result
         self.display_result.pack(padx=15, pady=15)
-        self.display_answer.grid(row=0, column=0,
-                                 columnspan=2, padx=50, pady=15, sticky="ew")
-        self.proceed.grid(row=1, column=1, padx=50, pady=15, sticky="ew")
-        self.leave.grid(row=1, column=0, padx=50, pady=15, sticky="ew")
+        self.display_answer.pack(fill=X)
+        self.leave.pack(fill=X)
+        # self.display_answer.grid(row=0, column=0,
+        #                          columnspan=2, padx=50, pady=15)
+        # self.proceed.grid(row=1, column=1, padx=50, pady=15, sticky="ew")
+        # self.leave.grid(row=1, column=0, padx=50, pady=15, sticky="ew")
 
         # Initialize
         self.play_game()
+        # while not self.WIN:
+        #     self.play_game()
+        #     if self.answer_checked_or_passed == False:
+        #         sleep(10)
+
+        # while self.answer_checked_or_passed and not self.WIN:
+        #     self.answer_checked_or_passed = False
+        #     self.play_game()
+        if self.WIN:
+            self.root.destroy()
 
     # Getting Random Words
     def random_word(self):
@@ -177,7 +195,7 @@ class RandomWords():
             return synset
 
         for index in range(NUM_RANDOM_WORDS):
-            current_words = [self.random_words[i]["text"] \
+            current_words = [self.random_words[i].cget('text') \
                               for i in range(NUM_RANDOM_WORDS)]
             word = choice(self.word_list)
             synonyms = get_synonyms(word).union(*[get_synonyms(wd)\
@@ -194,12 +212,13 @@ class RandomWords():
                 input_str = input_str + ")"
             return input_str
 
-        # Start by checking win condition
-        if self.WIN == True:
+        if self.WIN:
             messagebox.showinfo("Winner!", "You Won!")
-            self.root.destroy()
+            return True
+
+        self.answer_checked_or_passed = False
         self.random_word()
-        current_words = [self.random_words[i]["text"] \
+        current_words = [self.random_words[i].cget('text') \
                               for i in range(NUM_RANDOM_WORDS)]
         self.answer = choice(current_words)
         means = PyDictionary.meaning(self.answer)
@@ -208,22 +227,27 @@ class RandomWords():
         random_meaning = fix_parentheses(random_meaning)
         self.meaning["text"] = random_meaning
         self.parts_of_speech = random_key
+
         return True
 
     def check_answer(self, btn_num):
+        self.answer_checked_or_passed = False
+        # self.give_up["state"] = DISABLED
+        # self.proceed['state'] = NORMAL
         if self.random_words[btn_num]["text"] == self.answer:
             self.correct += 1
-            response = messagebox.askyesno("You got it!",\
-                                f'{self.answer} - \n' + \
-                                f'{self.parts_of_speech} : {self.meaning["text"]}',
-                                icon = 'info')
+            self.display_result["text"] = "You Got It!"
+            self.display_result.configure(bootstyle=SUCCESS)
+            self.display_answer["text"] =f'{self.answer} - \n' + \
+                  f'{self.parts_of_speech} : {self.meaning["text"]}'
+            self.display_answer.configure(bootstyle=SUCCESS)
         else:
             self.wrong += 1
-            response = messagebox.askyesno("Sorry", \
-                                f'The right answer was \n' + \
-                                f'{self.answer} - \n' + \
-                                f'{self.parts_of_speech} : {self.meaning["text"]}',
-                                icon = 'error')
+            self.display_result["text"] ="Sorry, " + 'The right answer was:'
+            self.display_result.configure(bootstyle=WARNING)
+            self.display_answer["text"] = f'{self.answer} - \n' + \
+                                f'{self.parts_of_speech} : {self.meaning["text"]}'
+            self.display_answer.configure(bootstyle=WARNING)
 
         self.score_book["text"] = "Current Score: " \
                                 + str(self.get_score())
@@ -237,15 +261,20 @@ class RandomWords():
         self.display_level["text"] = "Current Level: " \
                                         + str(self.current_level)
 
-        if response:
-            self.play_game()
-        else:
-            self.root.destroy()
+        self.answer_checked_or_passed = True
+
+        self.play_game()
+        return True
 
     def pass_round(self):
+        self.answer_checked_or_passed = False
+
         self.passed += 1
         self.num_passed["text"] = "Passed: " + str(self.passed)
+
+        self.answer_checked_or_passed = True
         self.play_game()
+        return True
 
     def get_score(self):
         return max(5 * self.correct - 2 * self.wrong, 0)
