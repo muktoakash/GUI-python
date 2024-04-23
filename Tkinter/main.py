@@ -65,8 +65,11 @@ class RandomWords():
         self.word_list = list(word for word in wn.words() if word.isalpha())
 
         # Game variables
+        self.WIN = False
+
         self.answer = "?"
         self.parts_of_speech = "?"
+
         self.meaning = Label(self.game_frame, text="?",
                              height=5, width=100,
                               wraplength=700, font=("Helvetica", 15))
@@ -79,7 +82,6 @@ class RandomWords():
         self.current_exp = self.exp_get(self.current_level, self.get_score())
 
         self.answer_checked_or_passed = True
-        self.WIN = False
 
 
         # Top objects:
