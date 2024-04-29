@@ -114,6 +114,11 @@ class RandomWords():
                                         + str(self.current_level),
                                         font = ("Helvetica", 15),
                                         bootstyle=SUCCESS)
+        self.exp_gauge = ttk.Floodgauge(
+            bootstyle=SUCCESS,
+            font=(None, 24, 'bold'),
+            mask='XP: {}%',
+            )
 
         # Bottom Objects
         self.display_result = ttk.LabelFrame(self.root,
@@ -141,6 +146,7 @@ class RandomWords():
         self.score_book.pack(padx=15, pady=15)
 
         self.display_level.pack(padx=15, pady=15)
+        self.exp_gauge.pack(fill=BOTH, expand=YES, padx=10, pady=10)
 
         self.score_frame.pack(fill=X, padx=15, pady=15,)
         self.num_correct.grid(row=0, column=0, padx=100, sticky='nsew')
