@@ -5,12 +5,11 @@ the nltk.corpus at the press of buttons.
 """
 
 # Import Modules
-from time import sleep
 from math import atan, pi
 from random import choice
 
 # imports
-from tkinter import Button, Label, messagebox,\
+from tkinter import Label, messagebox,\
      LabelFrame
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
@@ -237,6 +236,10 @@ class RandomWords():
 
         return True
 
+    def disp_answer(self):
+        self.display_answer["text"] =f'{self.answer} - \n' + \
+            f'{self.parts_of_speech} : {self.meaning["text"]}'
+
     def check_answer(self, btn_num):
 
         if self.WIN:
@@ -250,15 +253,18 @@ class RandomWords():
             self.correct += 1
             self.display_result["text"] = "You Got It!"
             self.display_result.configure(bootstyle=SUCCESS)
-            self.display_answer["text"] =f'{self.answer} - \n' + \
-                  f'{self.parts_of_speech} : {self.meaning["text"]}'
+            self.disp_answer()
+            # self.display_answer["text"] =f'{self.answer} - \n' + \
+            #       f'{self.parts_of_speech} : {self.meaning["text"]}'
             self.display_answer.configure(bootstyle=SUCCESS)
+            self.current_exp = self.exp_get()
         else:
             self.wrong += 1
             self.display_result["text"] ="Sorry, " + 'The right answer was:'
             self.display_result.configure(bootstyle=WARNING)
-            self.display_answer["text"] = f'{self.answer} - \n' + \
-                                f'{self.parts_of_speech} : {self.meaning["text"]}'
+            self.disp_answer()
+            # self.display_answer["text"] = f'{self.answer} - \n' + \
+            #                     f'{self.parts_of_speech} : {self.meaning["text"]}'
             self.display_answer.configure(bootstyle=WARNING)
 
         self.score_book["text"] = "Current Score: " \
@@ -266,8 +272,6 @@ class RandomWords():
 
         self.num_correct["text"] = "Correct Answers: " + str(self.correct)
         self.num_wrong["text"] = "Wrong Answers: " + str(self.wrong)
-
-        self.current_exp = self.exp_get()
 
         self.display_level["text"] = "Current Level: " \
                                         + str(self.current_level)
@@ -287,6 +291,12 @@ class RandomWords():
 
         self.passed += 1
         self.num_passed["text"] = "Passed: " + str(self.passed)
+        self.display_result.configure(bootstyle=PRIMARY)
+        self.display_result["text"] ="The right answer was:"
+        self.disp_answer()
+        # self.display_answer["text"] = f'{self.answer} - \n' + \
+        #                     f'{self.parts_of_speech} : {self.meaning["text"]}'
+        self.display_answer.configure(bootstyle=PRIMARY)
 
         self.answer_checked_or_passed = True
         self.play_game()
@@ -344,6 +354,8 @@ class RandomWords():
 
         if self.current_level == LEVELS:
             self.WIN = True
+
+        self.exp_gauge.configure(value = (exp / LEVELS) * 100)
 
         return exp
 
