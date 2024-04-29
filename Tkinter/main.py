@@ -64,7 +64,7 @@ class RandomWords():
         # Use all words in nltk corpus with a meaning
         self.word_list = list(word for word in wn.words() if word.isalpha())
 
-        # Game variables
+        # Initialize Game variables
         self.WIN = False
 
         self.answer = "?"
@@ -78,8 +78,7 @@ class RandomWords():
         self.passed = 0
 
         self.current_level = 1
-        self.exp_req = self.exp_multiplier(self.current_level + 1) * LEVELS
-        self.current_exp = self.exp_get(self.current_level, self.get_score())
+        self.current_exp = 0
 
         self.answer_checked_or_passed = True
 
@@ -262,8 +261,7 @@ class RandomWords():
         self.num_correct["text"] = "Correct Answers: " + str(self.correct)
         self.num_wrong["text"] = "Wrong Answers: " + str(self.wrong)
 
-        self.exp_req = self.exp_multiplier(self.current_level + 1) * LEVELS
-        self.current_exp = self.exp_get(self.current_level, self.get_score())
+        self.current_exp = self.exp_get()
 
         self.display_level["text"] = "Current Level: " \
                                         + str(self.current_level)
@@ -291,11 +289,21 @@ class RandomWords():
     def get_score(self):
         return max(5 * self.correct - 2 * self.wrong, 0)
 
-    def exp_multiplier(self, level):
-        return atan(self.current_level / LEVELS * pi /4 )
+    def exp_multiplier(self):
+        return atan(self.current_level / LEVELS * pi /4 ) # return value <= 1
 
-    def exp_get(self, level, exp_req=LEVELS-1):
-        """self.exp_get(level, exp_req)
+    def exp_increment(self):
+        # in future versions may be use exp_multiplier
+        multiplier = self.exp_multiplier()
+
+        # Current version:
+        multiplier = 0
+
+        exp_increment = 1 - multiplier * self.current_exp
+        return exp_increment
+
+    def exp_get(self):
+        """self.exp_get()
 
         Computes the experience achieved at a certain level based on the score,
         with the default being the maximum score allowed for the given level.
@@ -305,8 +313,8 @@ class RandomWords():
         - conditionally modifies self.WIN
 
         Requires:
-        1 <= level < LEVELS
-        0 <= exp_req
+        1 <= self.current_level <= LEVELS
+        0 <= self.current_exp
         """
 
         if self.WIN:
@@ -314,22 +322,23 @@ class RandomWords():
             return True
 
         try:
-            assert (1 <= level) and (level < LEVELS)
-            assert exp_req >= 0
+            assert (1 <= self.current_level) and (self.current_level <= LEVELS)
+            assert self.current_exp >= 0
         except AssertionError as e:
             messagebox.showerror("Assertions Failed", "Something went wrong, exiting program")
             self.root.destroy()
 
-        multiplier = self.exp_multiplier(level)
-        if exp_req == LEVELS-1:
-            exp = exp_req * multiplier
-        else:
-            exp = (exp_req + 1) % (LEVELS + 1)
-            exp *= multiplier
-            if self.exp_get(level, LEVELS-1) - exp <= multiplier:
-                self.current_level += 1
-            if self.current_level == LEVELS:
-                self.WIN = True
+        increment = self.exp_increment()
+
+        exp = self.current_exp + increment
+
+        if exp >= LEVELS-1:
+            exp = 0
+            self.current_level += 1
+
+        if self.current_level == LEVELS:
+            self.WIN = True
+
         return exp
 
     def next_round(self):
