@@ -5,12 +5,11 @@ the nltk.corpus at the press of buttons.
 """
 
 # Import Modules
-from time import sleep
 from math import atan, pi
 from random import choice
 
 # imports
-from tkinter import Button, Label, messagebox,\
+from tkinter import Label, messagebox,\
      LabelFrame
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
@@ -19,9 +18,13 @@ from ttkbootstrap.constants import *
 from nltk.corpus import wordnet as wn
 from PyDictionary import PyDictionary
 
+# This fixes a stupid issue with ttk.Meter
+from PIL import Image
+Image.CUBIC = Image.BICUBIC
+
 # global constant:
 NUM_RANDOM_WORDS = 3 # currently only choosing three random words
-LEVELS = 5 # Game ends when level 20 is reached
+LEVELS = 5 # Game ends when level 5 is reached
 
 # Class for main app
 class RandomWords():
@@ -31,7 +34,7 @@ class RandomWords():
     def __init__(self):
         """Initialize"""
         # Main App Objects and Settings
-        self.root = ttk.Window(themename="morph")
+        self.root = ttk.Window(themename="morph", size=(1130, 800))
 
         # Title
         self.root.title("Vocab Show Down!")
@@ -45,6 +48,11 @@ class RandomWords():
         # Create all App Objects
         self.style_info = ttk.Style()
         self.style_info.configure('info.TButton', font=('Helvetica', 15))
+
+        self.header = ttk.Label(self.root,
+                                text="Select the word that matches the meaning!",
+                                font=("Courier", 15),
+                                bootstyle=PRIMARY)
         self.text1 = ttk.Button(self.game_frame, text="?", width=30, \
                             command=lambda : self.check_answer(0),
                             style='info.TButton')
@@ -84,6 +92,26 @@ class RandomWords():
 
 
         # Top objects:
+        self.score_meter = ttk.Meter(self.root, bootstyle="primary",
+            # subtext="Tkinter Learned",
+            interactive=True,
+            # arcrange = 330,
+            arcoffset = 180,
+            textright="",
+            subtext = "Current Score",
+            subtextstyle = "primary",
+            subtextfont = '-size 12 -weight bold',
+            textleft="",
+            metertype="full", # Can be full
+            stripethickness=2,
+            wedgesize = 2,
+            metersize=150,
+            padding=5,
+            amountused=0,
+            amounttotal = 5*LEVELS * (LEVELS - 1) + 1,
+            # subtextstyle="light"
+        )
+
         self.score_book = ttk.Label(self.root,
                                     text = "Current Score: " \
                                         + str(self.get_score()),
@@ -114,6 +142,11 @@ class RandomWords():
                                         + str(self.current_level),
                                         font = ("Helvetica", 15),
                                         bootstyle=SUCCESS)
+        self.exp_gauge = ttk.Floodgauge(
+            bootstyle=SUCCESS,
+            font=(None, 12, 'bold'),
+            mask='XP: {}%',
+            )
 
         # Bottom Objects
         self.display_result = ttk.LabelFrame(self.root,
@@ -138,31 +171,45 @@ class RandomWords():
         # self.root.geometry("800x600")
 
         # Top:
-        self.score_book.pack(padx=15, pady=15)
+        self.header.grid(row=0, column=0, columnspan=2,
+                         sticky= 'w', padx=5, pady=5)
 
-        self.display_level.pack(padx=15, pady=15)
+        self.score_meter.grid(row=1, column=1, rowspan=2,
+                              sticky="ns", padx=5, pady=5)
+        # self.score_book.pack(padx=15, pady=15)
 
-        self.score_frame.pack(fill=X, padx=15, pady=15,)
+        self.display_level.grid(row=1, column=0,
+                                sticky='s', padx=5, pady=5)
+        self.exp_gauge.grid(row =2, column=0,
+                            sticky="ew", padx=5, pady=5)
+
+        self.score_frame.grid(row=3, column=0, columnspan=2,
+                              sticky="ew", padx=5, pady=5,)
+        # These go in the score_frame
         self.num_correct.grid(row=0, column=0, padx=100, sticky='nsew')
         self.num_wrong.grid(row=0, column=1, padx=100, sticky='nsew')
         self.num_passed.grid(row=0, column=2, padx=100, sticky='nsew')
+        #----------------------------
 
         #Game
-        self.game_frame.pack(padx=5, pady=5, fill=X)
+        self.game_frame.grid(row=4, column=0, columnspan=2,
+                             padx=5, pady=5, sticky="ew")
+        # These go inside game_frame
         self.meaning.grid(row=0, column=0, columnspan=3, sticky='E'+'W',)
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
+        #---------------------------
 
         self.give_up.grid(row=3, column=1, pady=15)
 
         # Result
-        self.display_result.pack(padx=15, pady=15)
+        self.display_result.grid(row=5, column=0, columnspan=2,
+                                 sticky="ew", padx=5, pady=5)
+        # These go inside display_result
         self.display_answer.pack(fill=X)
         self.leave.pack(fill=X)
-        # self.display_answer.grid(row=0, column=0,
-        #                          columnspan=2, padx=50, pady=15)
-        # self.proceed.grid(row=1, column=1, padx=50, pady=15, sticky="ew")
-        # self.leave.grid(row=1, column=0, padx=50, pady=15, sticky="ew")
+        #--------------------------
+
 
         # Initialize
         self.play_game()
@@ -176,6 +223,7 @@ class RandomWords():
         #     self.play_game()
         if self.WIN:
             self.root.destroy()
+
 
     # Getting Random Words
     def random_word(self):
@@ -231,6 +279,10 @@ class RandomWords():
 
         return True
 
+    def disp_answer(self):
+        self.display_answer["text"] =f'{self.answer} - \n' + \
+            f'{self.parts_of_speech} : {self.meaning["text"]}'
+
     def check_answer(self, btn_num):
 
         if self.WIN:
@@ -244,15 +296,18 @@ class RandomWords():
             self.correct += 1
             self.display_result["text"] = "You Got It!"
             self.display_result.configure(bootstyle=SUCCESS)
-            self.display_answer["text"] =f'{self.answer} - \n' + \
-                  f'{self.parts_of_speech} : {self.meaning["text"]}'
+            self.disp_answer()
+            # self.display_answer["text"] =f'{self.answer} - \n' + \
+            #       f'{self.parts_of_speech} : {self.meaning["text"]}'
             self.display_answer.configure(bootstyle=SUCCESS)
+            self.current_exp = self.exp_get()
         else:
             self.wrong += 1
             self.display_result["text"] ="Sorry, " + 'The right answer was:'
             self.display_result.configure(bootstyle=WARNING)
-            self.display_answer["text"] = f'{self.answer} - \n' + \
-                                f'{self.parts_of_speech} : {self.meaning["text"]}'
+            self.disp_answer()
+            # self.display_answer["text"] = f'{self.answer} - \n' + \
+            #                     f'{self.parts_of_speech} : {self.meaning["text"]}'
             self.display_answer.configure(bootstyle=WARNING)
 
         self.score_book["text"] = "Current Score: " \
@@ -260,8 +315,6 @@ class RandomWords():
 
         self.num_correct["text"] = "Correct Answers: " + str(self.correct)
         self.num_wrong["text"] = "Wrong Answers: " + str(self.wrong)
-
-        self.current_exp = self.exp_get()
 
         self.display_level["text"] = "Current Level: " \
                                         + str(self.current_level)
@@ -281,13 +334,21 @@ class RandomWords():
 
         self.passed += 1
         self.num_passed["text"] = "Passed: " + str(self.passed)
+        self.display_result.configure(bootstyle=PRIMARY)
+        self.display_result["text"] ="The right answer was:"
+        self.disp_answer()
+        # self.display_answer["text"] = f'{self.answer} - \n' + \
+        #                     f'{self.parts_of_speech} : {self.meaning["text"]}'
+        self.display_answer.configure(bootstyle=PRIMARY)
 
         self.answer_checked_or_passed = True
         self.play_game()
         return True
 
     def get_score(self):
-        return max(5 * self.correct - 2 * self.wrong, 0)
+        score = max(5 * self.correct - 2 * self.wrong, 0)
+        self.score_meter.configure(amountused = score)
+        return score
 
     def exp_multiplier(self):
         return atan(self.current_level / LEVELS * pi /4 ) # return value <= 1
@@ -338,6 +399,8 @@ class RandomWords():
 
         if self.current_level == LEVELS:
             self.WIN = True
+
+        self.exp_gauge.configure(value = (exp / LEVELS) * 100)
 
         return exp
 
