@@ -18,6 +18,10 @@ from ttkbootstrap.constants import *
 from nltk.corpus import wordnet as wn
 from PyDictionary import PyDictionary
 
+# This fixes a stupid issue with ttk.Meter
+from PIL import Image
+Image.CUBIC = Image.BICUBIC
+
 # global constant:
 NUM_RANDOM_WORDS = 3 # currently only choosing three random words
 LEVELS = 5 # Game ends when level 20 is reached
@@ -30,7 +34,7 @@ class RandomWords():
     def __init__(self):
         """Initialize"""
         # Main App Objects and Settings
-        self.root = ttk.Window(themename="morph")
+        self.root = ttk.Window(themename="morph", size=(1400, 1000))
 
         # Title
         self.root.title("Vocab Show Down!")
@@ -83,6 +87,26 @@ class RandomWords():
 
 
         # Top objects:
+        self.score_meter = ttk.Meter(self.root, bootstyle="primary",
+            # subtext="Tkinter Learned",
+            interactive=True,
+            # arcrange = 330,
+            arcoffset = 180,
+            textright="",
+            subtext = "Current Score",
+            subtextstyle = "primary",
+            subtextfont = '-size 12 -weight bold',
+            textleft="",
+            metertype="full", # Can be full
+            stripethickness=2,
+            wedgesize = 2,
+            metersize=150,
+            padding=5,
+            amountused=0,
+            amounttotal = 5*LEVELS * (LEVELS - 1) + 1,
+            # subtextstyle="light"
+        )
+
         self.score_book = ttk.Label(self.root,
                                     text = "Current Score: " \
                                         + str(self.get_score()),
@@ -115,7 +139,7 @@ class RandomWords():
                                         bootstyle=SUCCESS)
         self.exp_gauge = ttk.Floodgauge(
             bootstyle=SUCCESS,
-            font=(None, 24, 'bold'),
+            font=(None, 12, 'bold'),
             mask='XP: {}%',
             )
 
@@ -142,18 +166,26 @@ class RandomWords():
         # self.root.geometry("800x600")
 
         # Top:
-        self.score_book.pack(padx=15, pady=15)
+        self.score_meter.grid(row=0, column=1, rowspan=2,
+                              sticky="ns", padx=5, pady=5)
+        # self.score_book.pack(padx=15, pady=15)
 
-        self.display_level.pack(padx=15, pady=15)
-        self.exp_gauge.pack(fill=BOTH, expand=YES, padx=10, pady=10)
+        self.display_level.grid(row=0, column=0,
+                                sticky='s', padx=5, pady=5)
+        self.exp_gauge.grid(row =1, column=0,
+                            sticky="ew", padx=5, pady=5)
 
-        self.score_frame.pack(fill=X, padx=15, pady=15,)
+        self.score_frame.grid(row=2, column=0, columnspan=2,
+                              sticky="ew", padx=5, pady=5,)
+        # These go in the score_frame
         self.num_correct.grid(row=0, column=0, padx=100, sticky='nsew')
         self.num_wrong.grid(row=0, column=1, padx=100, sticky='nsew')
         self.num_passed.grid(row=0, column=2, padx=100, sticky='nsew')
+        #----------------------------
 
         #Game
-        self.game_frame.pack(padx=5, pady=5, fill=X)
+        self.game_frame.grid(row=3, column=0, columnspan=2,
+                             padx=5, pady=5, sticky="ew")
         self.meaning.grid(row=0, column=0, columnspan=3, sticky='E'+'W',)
         for index in range(NUM_RANDOM_WORDS):
             self.random_words[index].grid(row = 1, column = index)
@@ -161,13 +193,13 @@ class RandomWords():
         self.give_up.grid(row=3, column=1, pady=15)
 
         # Result
-        self.display_result.pack(padx=15, pady=15)
+        self.display_result.grid(row=4, column=0, columnspan=2,
+                                 sticky="ew", padx=5, pady=5)
+        # These go inside display_result
         self.display_answer.pack(fill=X)
         self.leave.pack(fill=X)
-        # self.display_answer.grid(row=0, column=0,
-        #                          columnspan=2, padx=50, pady=15)
-        # self.proceed.grid(row=1, column=1, padx=50, pady=15, sticky="ew")
-        # self.leave.grid(row=1, column=0, padx=50, pady=15, sticky="ew")
+        #--------------------------
+
 
         # Initialize
         self.play_game()
@@ -181,6 +213,11 @@ class RandomWords():
         #     self.play_game()
         if self.WIN:
             self.root.destroy()
+
+    def on_configure(self, event):
+        # update scrollregion after starting 'mainloop'
+        # when all widgets are in canvas
+        self.canvas.configure(scrollregion=self.canvas.bbox('all'))
 
     # Getting Random Words
     def random_word(self):
@@ -303,7 +340,9 @@ class RandomWords():
         return True
 
     def get_score(self):
-        return max(5 * self.correct - 2 * self.wrong, 0)
+        score = max(5 * self.correct - 2 * self.wrong, 0)
+        self.score_meter.configure(amountused = score)
+        return score
 
     def exp_multiplier(self):
         return atan(self.current_level / LEVELS * pi /4 ) # return value <= 1
