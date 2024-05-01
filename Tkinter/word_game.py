@@ -34,7 +34,8 @@ class RandomWords():
     def __init__(self):
         """Initialize"""
         # Main App Objects and Settings
-        self.root = ttk.Window(themename="morph", size=(1130, 800))
+        self.root = ttk.Window(themename="cyborg", size=(1130, 800))
+        #  morph vapor
 
         # Title
         self.root.title("Vocab Show Down!")
