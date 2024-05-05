@@ -6,6 +6,7 @@ from kivy.uix.button import Button
 class BoxLayoutExample(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.orientation = 'vertical'
 
         b1 = Button(text = 'A')
         b2 = Button(text = 'B')
