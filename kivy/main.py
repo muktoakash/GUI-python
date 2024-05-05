@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 
 class BoxLayoutExample(BoxLayout):
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
@@ -15,7 +16,8 @@ class BoxLayoutExample(BoxLayout):
         self.add_widget(b1)
         self.add_widget(b2)
         self.add_widget(b3)
-
+    """
+    
 class MainWidget(Widget):
     pass
 
