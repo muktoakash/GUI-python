@@ -20,8 +20,8 @@ class StackLayoutExample(StackLayout):
             b = Button(text = str(i+1), size_hint = (None, None), size = (size, size))
             self.add_widget(b)
 
-# class GridLayourExample(GridLayout):
-#     pass
+class GridLayourExample(GridLayout):
+    pass
 
 class AnchorLayoutExample(AnchorLayout):
     pass
