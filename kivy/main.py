@@ -12,6 +12,8 @@ from kivy.metrics import dp
 
 class WidgetsExample(GridLayout):
     """"""
+    def on_button_click(self):
+        print("button clicked")
 
 class MainWidget(Widget):
     pass
