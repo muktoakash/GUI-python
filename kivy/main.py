@@ -15,11 +15,15 @@ class WidgetsExample(GridLayout):
     """"""
     count = 0
     my_text = StringProperty("Hello!")
+
     def on_button_click(self):
         print("button clicked")
         # self.my_text = "You clicked!"
         self.count += 1
         self.my_text = f'{self.count}'
+
+    def on_toggle_button_state(self):
+        print("toggle_state")
 
 class MainWidget(Widget):
     pass
