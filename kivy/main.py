@@ -22,8 +22,8 @@ class WidgetsExample(GridLayout):
         self.count += 1
         self.my_text = f'{self.count}'
 
-    def on_toggle_button_state(self):
-        print("toggle_state")
+    def on_toggle_button_state(self, widget):
+        print("toggle_state:" + widget.state)
 
 class MainWidget(Widget):
     pass
