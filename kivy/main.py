@@ -14,12 +14,24 @@ from kivy.properties import StringProperty
 class WidgetsExample(GridLayout):
     """"""
     count = 0
+    count_enabled = False
     my_text = StringProperty("Hello!")
+
     def on_button_click(self):
         print("button clicked")
         # self.my_text = "You clicked!"
-        self.count += 1
-        self.my_text = f'{self.count}'
+        if self.count_enabled:
+            self.count += 1
+            self.my_text = f'{self.count}'
+
+    def on_toggle_button_state(self, widget):
+        print("toggle_state:" + widget.state)
+        if widget.state == "normal":
+            widget.text = "OFF"
+            self.count_enabled = False
+        else:
+            widget.text = "ON"
+            self.count_enabled = True
 
 class MainWidget(Widget):
     pass
