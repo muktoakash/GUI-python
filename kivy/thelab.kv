@@ -22,6 +22,10 @@ WidgetsExample:
         font_name: "./fonts/Lcd.ttf"
         font_size: "88dp"
         color: 1, .5, 1, 1
+    Switch:
+        on_active: root.on_switch_active(self)
+        size_hint: None, 1
+        width: "100dp"
 
 <PageLayoutExample@PageLayout>:
     MainWidget:
