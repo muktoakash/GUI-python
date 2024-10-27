@@ -26,6 +26,12 @@ WidgetsExample:
         on_active: root.on_switch_active(self)
         size_hint: None, 1
         width: "100dp"
+    Slider:
+        min: 0
+        max: 100
+        value: 50
+        on_value: root.on_slider_value(self)
+        orientation: "vertical"
 
 <PageLayoutExample@PageLayout>:
     MainWidget:
