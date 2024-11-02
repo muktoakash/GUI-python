@@ -23,6 +23,7 @@ WidgetsExample:
         font_size: "88dp"
         color: 1, .5, 1, 1
     Switch:
+        id: my_switch
         on_active: root.on_switch_active(self)
         size_hint: None, 1
         width: "100dp"
@@ -33,6 +34,7 @@ WidgetsExample:
         value: 50
         # on_value: root.on_slider_value(self)
         orientation: "vertical"
+        disabled: not my_switch.active
     Label:
         # text: root.slider_value_txt
         text: str(int(my_slider.value))
