@@ -7,7 +7,8 @@
 # WidgetsExample:
 # ImagesExample:
 # CanvasExample1:
-CanvasExample2:
+# CanvasExample2:
+CanvasExample3:
 
 
 #:set s dp(150)
@@ -32,6 +33,15 @@ CanvasExample2:
         Line:
             points: (self.width/2, 0, self.width/2, self.height)
             width: 2
+
+<CanvasExample3>:
+    canvas:
+        Line:
+            circle: (200, 200, 100) # center_x, center_y, radius
+            width: 2
+        Line:
+            ellipse: (500, 300, 100, 200) # center_x, center_y, radius_x, radius_y
+            width: 4
 
 <ImagesExample@GridLayout>:
     cols: 3
